@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gana Comisiones - Drop Store</title>
+	
+	<!-- FAVICON (FOTO DE LA PESTAÑA) -->
+    <link rel="icon" type="image/png" href="uploads/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: #f8fafc; color: #334155; line-height: 1.6; }
+
+        header { background: #ffffff; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem; position: relative; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: #0f172a; text-decoration: none; }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 5px; }
+        .menu-toggle span { width: 25px; height: 3px; background-color: #0f172a; border-radius: 2px; }
+
+        .nav-links { display: flex; list-style: none; gap: 1.2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: #475569; font-weight: 500; font-size: 0.95rem; }
+        .nav-links a:hover { color: #2563eb; }
+
+        .btn-destacado { background-color: #10b981; color: white !important; padding: 0.5rem 1.2rem; border-radius: 25px; font-weight: 600; }
+
+        .hero-afiliados { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; text-align: center; padding: 3.5rem 1.5rem; }
+        .hero-afiliados h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); margin-bottom: 0.8rem; font-weight: 700; color: #ffffff; }
+        .hero-afiliados p { font-size: clamp(1rem, 3vw, 1.15rem); color: #cbd5e1; max-width: 700px; margin: 0 auto 1.5rem; }
+
+        .contenedor-principal { max-width: 1100px; margin: 2.5rem auto; padding: 0 1.5rem; }
+
+        /* SECCIÓN GENERADOR DE ENLACES */
+        .card-generador { background: #ffffff; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 2px solid #2563eb; margin-bottom: 2.5rem; }
+        .card-generador h2 { font-size: 1.4rem; color: #0f172a; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .card-generador p { color: #64748b; font-size: 0.95rem; margin-bottom: 1.2rem; }
+        .form-generador { display: flex; flex-direction: column; gap: 1rem; }
+        .input-group-gen { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .input-gen { flex-grow: 1; min-width: 240px; padding: 0.8rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none; }
+        .input-gen:focus { border-color: #2563eb; }
+        .btn-gen { background: #2563eb; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-gen:hover { background: #1d4ed8; }
+        .resultado-gen { display: none; margin-top: 1rem; background: #f8fafc; border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px; }
+        .resultado-gen.active { display: flex; flex-direction: column; gap: 0.8rem; }
+        .url-box { width: 100%; padding: 0.7rem; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace; font-size: 0.9rem; color: #0f172a; }
+        .btn-copiar { background: #10b981; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; cursor: pointer; align-self: flex-start; transition: background 0.2s; }
+        .btn-copiar:hover { background: #059669; }
+
+        /* SECCIÓN INFORMATIVA DEL TRABAJO */
+        .card-info-trabajo { background: #ffffff; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); border: 1px solid #e2e8f0; margin-bottom: 2.5rem; }
+        .card-info-trabajo h2 { font-size: 1.4rem; color: #0f172a; margin-bottom: 1rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 0.6rem; }
+        .card-info-trabajo p { margin-bottom: 1rem; color: #475569; }
+        
+        .bloque-destacado { background: #f8fafc; border-left: 4px solid #2563eb; padding: 1.2rem; border-radius: 8px; margin: 1.2rem 0; }
+        .bloque-destacado h3 { font-size: 1.05rem; color: #1e40af; margin-bottom: 0.5rem; }
+
+        .lista-claves { list-style: none; margin: 1rem 0; }
+        .lista-claves li { margin-bottom: 0.6rem; font-size: 0.95rem; color: #334155; display: flex; align-items: flex-start; gap: 0.5rem; }
+
+        /* TABLAS DE COMISIONES POR CATEGORÍA */
+        .seccion-comisiones { margin-top: 3rem; }
+        .seccion-comisiones h2 { text-align: center; font-size: 1.8rem; color: #0f172a; margin-bottom: 0.5rem; }
+        .seccion-subtitulo { text-align: center; color: #64748b; margin-bottom: 2rem; }
+
+        .grid-tablas { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+        .card-tabla { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .card-tabla-header { background: #10b981; color: #ffffff; padding: 0.8rem 1rem; font-weight: 700; font-size: 1.05rem; text-align: center; }
+        .card-tabla-header.header-miselaneas { background: #2563eb; }
+        .card-tabla-header.header-taller { background: #8b5cf6; }
+        .card-tabla-header.header-dogs { background: #f59e0b; }
+
+        .tabla-comisiones { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
+        .tabla-comisiones th, .tabla-comisiones td { padding: 0.65rem 0.9rem; border-bottom: 1px solid #f1f5f9; }
+        .tabla-comisiones th { background: #f8fafc; color: #475569; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
+        .tabla-comisiones tr:last-child td { border-bottom: none; }
+        .tabla-comisiones tr:hover { background: #f8fafc; }
+        .monto-comision { font-weight: 700; color: #059669; text-align: right; }
+
+        /* BOTÓN DE WHATSAPP FLOTANTE Y ACCIÓN */
+        .cta-afiliados { text-align: center; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; padding: 2.5rem 1.5rem; border-radius: 16px; margin-top: 3rem; }
+        .cta-afiliados h3 { font-size: 1.4rem; margin-bottom: 0.8rem; }
+        .btn-whatsapp-cta { display: inline-block; background-color: #ffffff; color: #059669; font-weight: 700; padding: 0.9rem 2rem; border-radius: 30px; text-decoration: none; margin-top: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn-whatsapp-cta:hover { background-color: #f8fafc; }
+
+        footer { background-color: #0f172a; color: #94a3b8; text-align: center; padding: 2rem 1rem; margin-top: 4rem; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background-color: #ffffff; padding: 1.5rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); gap: 1.2rem; }
+            .nav-links.active { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Drop Store</a>
+            <button class="menu-toggle" id="mobile-menu" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html#tiendas">Nuestras Tiendas</a></li>
+                <li><a href="servicios.html">Servicios Mascotas</a></li>
+                <li><a href="index.html#envios">Mensajería</a></li>
+                <li><a href="index.html#ubicacion">Ubicación</a></li>
+                <li><a href="afiliados.html" class="btn-destacado">Gana Comisiones</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero-afiliados">
+        <h1>🌟 Programa de Afiliados y Gestores</h1>
+        <p>¡Convierte tus Redes Sociales en una Fuente Constante de Ingresos con Drop Store!</p>
+    </section>
+
+    <div class="contenedor-principal">
+
+        <!-- HERRAMIENTA GENERADORA DE ENLACES -->
+        <div class="card-generador">
+            <h2>🔗 Generador de Enlace Personalizado</h2>
+            <p>Introduce tu nombre o código de comercial para generar la URL que enviarás a tus clientes:</p>
+            <div class="form-generador">
+                <div class="input-group-gen">
+                    <input type="text" id="nombre-comercial-input" class="input-gen" placeholder="Ejemplo: Cristian, Roberto, Maria">
+                    <button type="button" id="btn-generar-link" class="btn-gen">Generar mi Enlace</button>
+                </div>
+                <div id="resultado-link" class="resultado-gen">
+                    <label style="font-weight: 600; font-size: 0.85rem;">Tu enlace único para compartir:</label>
+                    <input type="text" id="url-resultado" class="url-box" readonly>
+                    <button type="button" id="btn-copiar-link" class="btn-copiar">📋 Copiar Enlace al Portapapeles</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFORMACIÓN DEL TRABAJO -->
+        <div class="card-info-trabajo">
+            <h2>💼 Información del Trabajo</h2>
+            <p>Trabajar con nosotros es sencillo, flexible y sin límites de ganancias. Tus ingresos dependen totalmente de tus resultados: <strong>mientras más publicas, más ganas.</strong></p>
+
+            <div class="bloque-destacado">
+                <h3>📌 Tu Única Función:</h3>
+                <p style="margin:0;">Publica nuestro catálogo de productos en tus redes y comparte tu <strong>enlace personalizado de afiliado</strong>. Cada vez que un cliente compra usando tu link, la venta queda registrada automáticamente a tu nombre y ganas tu comisión.</p>
+            </div>
+
+            <div class="bloque-destacado">
+                <h3>📦 ¿Cómo Funciona el Proceso de Venta?</h3>
+                <ol style="margin-left: 1.2rem; margin-top: 0.4rem; color: #475569;">
+                    <li>Conecta con clientes interesados en WhatsApp, Facebook o Instagram.</li>
+                    <li>Envíales tu link personal de comercial.</li>
+                    <li>El cliente ingresa a la página, agrega sus productos al carrito y completa su compra de forma directa y automatizada. ¡Nosotros nos encargamos del resto!</li>
+                </ol>
+            </div>
+
+            <div class="bloque-destacado">
+                <h3>🚀 Catálogo Siempre Actualizado:</h3>
+                <p style="margin:0;">Renovamos constantemente nuestro inventario con productos de alta demanda para que nunca te quedes sin opciones para vender.</p>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+                <h3 style="color: #0f172a; font-size: 1.1rem; margin-bottom: 0.8rem;">💡 Estrategias y Claves para Multiplicar tus Ventas:</h3>
+                <ul class="lista-claves">
+                    <li>✅ <strong>Domina el catálogo:</strong> Conoce bien las telas, medidas, funciones y detalles clave de cada producto para responder con total seguridad.</li>
+                    <li>✅ <strong>Maximiza tu alcance:</strong> Publica diariamente en tu estado de WhatsApp y en grupos de Facebook (recomendado: mínimo 50 grupos activos).</li>
+                    <li>✅ <strong>Respuesta rápida:</strong> Mantente atento a los mensajes; una respuesta ágil cierra la venta al instante.</li>
+                    <li>✅ <strong>Entregas garantizadas:</strong> Nuestro equipo de mensajería trabaja por turnos continuos para cubrir casi todas las zonas de entrega con rapidez.</li>
+                </ul>
+            </div>
+
+            <div class="bloque-destacado" style="border-left-color: #10b981; background: #f0fdf4;">
+                <h3 style="color: #065f46;">👥 Sistema Transparente de Pagos y Comunidad de Gestores:</h3>
+                <p style="color: #166534; margin: 0;">
+                    📆 Formarás parte de un grupo exclusivo de ventas donde se registran diariamente las compras confirmadas de cada gestor. A través de este sistema transparente se lleva el control de tus comisiones con <strong>pagos quincenales puntuales</strong>.<br><br>
+                    🏆 <strong>Premio al Desempeño:</strong> ¡Demuestra tu talento y conviértete oficialmente en Gestor Oficial de Drop Store!
+                </p>
+            </div>
+        </div>
+
+        <!-- TABLA DE COMISIONES POR PRODUCTO -->
+        <div class="seccion-comisiones">
+            <h2>📊 Tabla Oficial de Comisiones por Producto</h2>
+            <p class="seccion-subtitulo">Consulta el monto exacto de ganancia que obtendrás por cada venta realizada</p>
+
+            <div class="grid-tablas">
+                <!-- MEDICAMENTOS -->
+                <div class="card-tabla">
+                    <div class="card-tabla-header">💊 Medicamentos</div>
+                    <table class="tabla-comisiones">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th style="text-align: right;">Comisión</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Test de embarazo</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Pildora del dia despues</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Anticonceptivas Oceira</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Vacunas trimestrales</td><td class="monto-comision">$200.00</td></tr>
+                            <tr><td>Ovulos Clotrimazol</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Ovulos Nistatina</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Ovulos metronidazol + Nistatina</td><td class="monto-comision">$70.00</td></tr>
+                            <tr><td>Sildenafil</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Ciprofloxacina</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Sulfaprim</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Cefalexina</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Azitromicina</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Amoxicilina</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Doxiciclina</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Fluconazol</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Metronidazol</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Enalapril</td><td class="monto-comision">$70.00</td></tr>
+                            <tr><td>Captopril</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Paracetamol</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Salbutamol</td><td class="monto-comision">$200.00</td></tr>
+                            <tr><td>Diclofenaco & Paracetamol</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Preservativos</td><td class="monto-comision">$200.00</td></tr>
+                            <tr><td>Prednisona</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Vitamina C</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Difenidramina</td><td class="monto-comision">$50.00</td></tr>
+                            <tr><td>Loratadina</td><td class="monto-comision">$50.00</td></tr>
+                            <tr><td>Grabinol</td><td class="monto-comision">$50.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- MISCELÁNEAS -->
+                <div class="card-tabla">
+                    <div class="card-tabla-header header-miselaneas">📦 Misceláneas</div>
+                    <table class="tabla-comisiones">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th style="text-align: right;">Comisión</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Humificadores</td><td class="monto-comision">$250.00</td></tr>
+                            <tr><td>Aroma 10ml</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Luces Espejo</td><td class="monto-comision">$650.00</td></tr>
+                            <tr><td>Luces Led 10m</td><td class="monto-comision">$550.00</td></tr>
+                            <tr><td>Luces Led 5m</td><td class="monto-comision">$250.00</td></tr>
+                            <tr><td>Luz Led 15m</td><td class="monto-comision">$500.00</td></tr>
+                            <tr><td>Palo de Selfie</td><td class="monto-comision">$550.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TALLER PERSONALIZADO -->
+                <div class="card-tabla">
+                    <div class="card-tabla-header header-taller">🎨 Taller / Comerciales</div>
+                    <table class="tabla-comisiones">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th style="text-align: right;">Comisión</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Pullover Blanco</td><td class="monto-comision">$400.00</td></tr>
+                            <tr><td>Pullover Negro</td><td class="monto-comision">$400.00</td></tr>
+                            <tr><td>Pullover Beige</td><td class="monto-comision">$400.00</td></tr>
+                            <tr><td>Enguatada</td><td class="monto-comision">$400.00</td></tr>
+                            <tr><td>Jarra Cerámica</td><td class="monto-comision">$200.00</td></tr>
+                            <tr><td>Jarras Color</td><td class="monto-comision">$200.00</td></tr>
+                            <tr><td>Jarra Mágica</td><td class="monto-comision">$200.00</td></tr>
+                            <tr><td>Jarra Térmica</td><td class="monto-comision">$500.00</td></tr>
+                            <tr><td>Jarra Cristal</td><td class="monto-comision">$250.00</td></tr>
+                            <tr><td>Pomo</td><td class="monto-comision">$1,000.00</td></tr>
+                            <tr><td>Mousepad</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Pop Socket</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Identificación</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Láminas</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Tarjetas</td><td class="monto-comision">$50.00</td></tr>
+                            <tr><td>Bolsas</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Delantal</td><td class="monto-comision">$250.00</td></tr>
+                            <tr><td>Llavero</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Gorra</td><td class="monto-comision">$300.00</td></tr>
+                            <tr><td>Porta cel</td><td class="monto-comision">$150.00</td></tr>
+                            <tr><td>Cojines</td><td class="monto-comision">$200.00</td></tr>
+                            <tr><td>Stiker</td><td class="monto-comision">$100.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- MASCOTAS (DOGS MED) -->
+                <div class="card-tabla">
+                    <div class="card-tabla-header header-dogs">🐾 Mascotas (Dogs Med)</div>
+                    <table class="tabla-comisiones">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th style="text-align: right;">Comisión</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Vacuna Hexavalente</td><td class="monto-comision">$300.00</td></tr>
+                            <tr><td>Gamma PVC</td><td class="monto-comision">$50.00</td></tr>
+                            <tr><td>Disglobin</td><td class="monto-comision">$50.00</td></tr>
+                            <tr><td>Simparica</td><td class="monto-comision">$300.00</td></tr>
+                            <tr><td>Amitraz</td><td class="monto-comision">$20.00</td></tr>
+                            <tr><td>Adipet</td><td class="monto-comision">$20.00</td></tr>
+                            <tr><td>Friponil</td><td class="monto-comision">$50.00</td></tr>
+                            <tr><td>Collar cascabel</td><td class="monto-comision">$50.00</td></tr>
+                            <tr><td>Collares Reflectantes</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Collar Grande</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Arnés de color</td><td class="monto-comision">$400.00</td></tr>
+                            <tr><td>Collar Isabelino</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Juguete soga</td><td class="monto-comision">$400.00</td></tr>
+                            <tr><td>Correa retráctil</td><td class="monto-comision">$150.00</td></tr>
+                            <tr><td>Collar con lazo</td><td class="monto-comision">$400.00</td></tr>
+                            <tr><td>Collar con Garfio/Garr</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Collar con Estrellas</td><td class="monto-comision">$150.00</td></tr>
+                            <tr><td>Cepillo</td><td class="monto-comision">$150.00</td></tr>
+                            <tr><td>Pelota</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Aceite de coco</td><td class="monto-comision">$150.00</td></tr>
+                            <tr><td>Champú</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Jabón de azufre</td><td class="monto-comision">$100.00</td></tr>
+                            <tr><td>Crema azufre</td><td class="monto-comision">$50.00</td></tr>
+                            <tr><td>Cera para almohadillas</td><td class="monto-comision">$150.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ACCIÓN PARA REGISTRO POR WHATSAPP -->
+        <div class="cta-afiliados">
+            <h3>📣 ¿Listo para comenzar a ganar?</h3>
+            <p>Pídenos tus tips exclusivos y tu enlace de afiliado directamente por WhatsApp para orientarte paso a paso.</p>
+            <a href="https://wa.me/5354731530?text=Hola,%20deseo%20registrarme%20como%20promotor/afiliado%20y%20recibir%20los%20tips%20de%20venta" target="_blank" class="btn-whatsapp-cta">📲 Registrarme y Pedir Tips por WhatsApp</a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Drop Store. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            initMenuMobile();
+            gestionarComercialURL();
+            propagacionEnlacesInternos();
+            initGeneradorEnlaces();
+        });
+
+        /* ==========================================
+           SISTEMA DE AFILIADOS / COMERCIALES
+        =========================================== */
+        function gestionarComercialURL() {
+            const params = new URLSearchParams(window.location.search);
+            const refVal = params.get('ref') || params.get('c') || params.get('comercial');
+
+            if (refVal) {
+                const nombreLimpio = decodeURIComponent(refVal.trim());
+                let tagComercial = nombreLimpio;
+                if (!nombreLimpio.toLowerCase().startsWith('c ')) {
+                    tagComercial = 'C ' + nombreLimpio.charAt(0).toUpperCase() + nombreLimpio.slice(1);
+                }
+                localStorage.setItem('drop_comercial', tagComercial);
+            }
+        }
+
+        function obtenerComercialActivo() {
+            return localStorage.getItem('drop_comercial') || null;
+        }
+
+        function propagacionEnlacesInternos() {
+            const comercial = obtenerComercialActivo();
+            if (!comercial) return;
+
+            const nombrePure = comercial.replace(/^C\s+/i, '');
+            const links = document.querySelectorAll('a[href]');
+
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:') || href.includes('wa.me')) {
+                    return;
+                }
+
+                try {
+                    const url = new URL(href, window.location.href);
+                    if (url.origin === window.location.origin) {
+                        url.searchParams.set('ref', nombrePure);
+                        link.setAttribute('href', url.pathname + url.search + url.hash);
+                    }
+                } catch (e) {
+                    console.error("Error al procesar URL del enlace:", e);
+                }
+            });
+        }
+
+        function initMenuMobile() {
+            const toggle = document.getElementById("mobile-menu");
+            const nav = document.getElementById("nav-links");
+            if (toggle && nav) {
+                toggle.addEventListener("click", () => {
+                    nav.classList.toggle("active");
+                });
+            }
+        }
+
+        function initGeneradorEnlaces() {
+            const btnGenerar = document.getElementById("btn-generar-link");
+            const inputNombre = document.getElementById("nombre-comercial-input");
+            const resultadoBox = document.getElementById("resultado-link");
+            const urlBox = document.getElementById("url-resultado");
+            const btnCopiar = document.getElementById("btn-copiar-link");
+
+            if (!btnGenerar || !inputNombre || !resultadoBox || !urlBox || !btnCopiar) return;
+
+            btnGenerar.addEventListener("click", () => {
+                const nombreVal = inputNombre.value.trim();
+                if (!nombreVal) {
+                    alert("Por favor, ingresa tu nombre o código de comercial.");
+                    return;
+                }
+
+                const baseUrl = window.location.origin + window.location.pathname.replace("afiliados.html", "index.html");
+                const finalUrl = `${baseUrl}?ref=${encodeURIComponent(nombreVal)}`;
+
+                urlBox.value = finalUrl;
+                resultadoBox.classList.add("active");
+            });
+
+            btnCopiar.addEventListener("click", () => {
+                if (!urlBox.value) return;
+
+                navigator.clipboard.writeText(urlBox.value).then(() => {
+                    const textoOriginal = btnCopiar.innerText;
+                    btnCopiar.innerText = "¡Copiado con éxito! ✅";
+                    btnCopiar.style.backgroundColor = "#059669";
+                    setTimeout(() => {
+                        btnCopiar.innerText = textoOriginal;
+                        btnCopiar.style.backgroundColor = "#10b981";
+                    }, 2000);
+                }).catch(err => {
+                    urlBox.select();
+                    document.execCommand("copy");
+                    alert("Enlace copiado al portapapeles.");
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drop_Shop - Servicios para Mascotas</title>
+	
+		<!-- FAVICON (FOTO DE LA PESTAÑA) -->
+    <link rel="icon" type="image/png" href="uploads/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: #f8fafc; color: #334155; line-height: 1.6; }
+
+        header { background: #ffffff; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem; position: relative; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: #0f172a; text-decoration: none; }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 5px; }
+        .menu-toggle span { width: 25px; height: 3px; background-color: #0f172a; border-radius: 2px; }
+
+        .nav-links { display: flex; list-style: none; gap: 1.2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: #475569; font-weight: 500; font-size: 0.95rem; }
+        .nav-links a:hover { color: #2563eb; }
+
+        .btn-destacado { background-color: #10b981; color: white !important; padding: 0.5rem 1.2rem; border-radius: 25px; font-weight: 600; }
+
+        .hero { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; text-align: center; padding: 4rem 1.5rem; }
+        .hero h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin-bottom: 1rem; font-weight: 700; }
+        .hero p { font-size: clamp(1rem, 3vw, 1.15rem); color: #cbd5e1; max-width: 650px; margin: 0 auto 1.8rem; }
+
+        .seccion { max-width: 1200px; margin: 3.5rem auto; padding: 0 1.5rem; text-align: center; }
+        .seccion h2 { font-size: clamp(1.5rem, 4vw, 2rem); color: #0f172a; margin-bottom: 0.5rem; }
+        .seccion-subtitulo { color: #64748b; margin-bottom: 2rem; }
+
+        .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; text-align: left; }
+        .servicio-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s, box-shadow 0.3s; }
+        .servicio-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.06); }
+        .servicio-icono { font-size: 2.2rem; margin-bottom: 0.5rem; color: #2563eb; }
+        .servicio-titulo { font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 0.4rem; }
+        .servicio-desc { font-size: 0.88rem; color: #64748b; margin-bottom: 1.2rem; }
+        .badge-proximamente { display: inline-block; background: #fef3c7; color: #d97706; font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 12px; margin-bottom: 0.8rem; width: fit-content; }
+        
+        .btn-pedir-wa { display: block; width: 100%; text-align: center; background-color: #10b981; color: white; border: none; padding: 0.6rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+        .btn-pedir-wa:hover { background-color: #059669; }
+
+        footer { background-color: #0f172a; color: #94a3b8; text-align: center; padding: 2rem 1rem; margin-top: 4rem; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background-color: #ffffff; padding: 1.5rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); gap: 1.2rem; }
+            .nav-links.active { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Drop Store</a>
+            <button class="menu-toggle" id="mobile-menu" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html#tiendas">Nuestras Tiendas</a></li>
+                <li><a href="servicios.html" style="color: #2563eb; font-weight:700;">Servicios Mascotas</a></li>
+                <li><a href="index.html#envios">Mensajería</a></li>
+                <li><a href="index.html#ubicacion">Ubicación</a></li>
+                <li><a href="index.html#afiliados" class="btn-destacado">¡Gana Comisiones!</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Servicios Especializados para Mascotas</h1>
+        <p>Atención y cuidado técnico a domicilio para el bienestar de tu compañero de vida.</p>
+    </section>
+
+    <!-- SERVICIOS DISPONIBLES Y PRÓXIMOS -->
+    <section class="seccion">
+        <h2>🐾 Nuestros Servicios</h2>
+        <p class="seccion-subtitulo">Próximamente brindaremos atención técnica a domicilio en San Miguel del Padrón y zonas cercanas</p>
+        
+        <div class="grid-servicios">
+            <div class="servicio-card">
+                <div>
+                    <div class="servicio-icono">💉</div>
+                    <h3 class="servicio-titulo">Inyección y Curación A Domicilio</h3>
+                    <p class="servicio-desc">Aplicación de medicamentos inyectables prescritos y curación de heridas superficiales o postoperatorias.</p>
+                </div>
+                <a href="https://wa.me/5354731530?text=Hola,%20deseo%20consultar%20sobre%20el%20servicio%20de%20Inyección%20y%20Curación" target="_blank" class="btn-pedir-wa">Consultar por WhatsApp</a>
+            </div>
+
+            <div class="servicio-card">
+                <div>
+                    <div class="servicio-icono">🧼</div>
+                    <h3 class="servicio-titulo">Limpieza de Oídos y Corte de Uñas</h3>
+                    <p class="servicio-desc">Higiene básica preventiva para evitar infecciones de oído y molestias en las patas de tu mascota.</p>
+                </div>
+                <a href="https://wa.me/5354731530?text=Hola,%20deseo%20consultar%20sobre%20el%20servicio%20de%20Limpieza%20de%20Oídos" target="_blank" class="btn-pedir-wa">Consultar por WhatsApp</a>
+            </div>
+
+            <div class="servicio-card">
+                <div>
+                    <div class="servicio-icono">🪱</div>
+                    <h3 class="servicio-titulo">Desparasitación Guiada</h3>
+                    <p class="servicio-desc">Suministro y asesoría para la administración correcta de antiparasitarios internos y externos.</p>
+                </div>
+                <a href="https://wa.me/5354731530?text=Hola,%20deseo%20consultar%20sobre%20el%20servicio%20de%20Desparasitación%20Guiada" target="_blank" class="btn-pedir-wa">Consultar por WhatsApp</a>
+            </div> 
+
+            <div class="servicio-card">
+                <div>
+                    <div class="servicio-icono">🩺</div>
+                    <span class="badge-proximamente">Próximamente</span>
+                    <h3 class="servicio-titulo">Control de Dosis y Seguimiento Médico</h3>
+                    <p class="servicio-desc">Asesoría preventiva y control periódico para mascotas en tratamientos de larga duración.</p>
+                </div>
+                <a href="https://wa.me/5354731530?text=Hola,%20deseo%20consultar%20sobre%20el%20servicio%20de%20Control%20de%20Dosis" target="_blank" class="btn-pedir-wa">Consultar por WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Drop Store. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const toggle = document.getElementById("mobile-menu");
+            const nav = document.getElementById("nav-links");
+            if (toggle && nav) {
+                toggle.addEventListener("click", () => {
+                    nav.classList.toggle("active");
+                });
+            }
+        });
+    </script>
+</body>
+</html>
