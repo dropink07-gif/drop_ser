@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drop_Shop - Servicios y Productos</title>
+	
+	<!-- FAVICON (FOTO DE LA PESTAÑA) -->
+    <link rel="icon" type="image/png" href="uploads/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- ==========================================
+         1. ESTILOS CSS
+    =========================================== -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: #f8fafc; color: #334155; line-height: 1.6; }
+
+        header { background: #ffffff; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem; position: relative; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: #0f172a; }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 5px; }
+        .menu-toggle span { width: 25px; height: 3px; background-color: #0f172a; border-radius: 2px; }
+
+        .nav-links { display: flex; list-style: none; gap: 1.2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: #475569; font-weight: 500; font-size: 0.95rem; }
+        .nav-links a:hover { color: #2563eb; }
+
+        .btn-destacado { background-color: #10b981; color: white !important; padding: 0.5rem 1.2rem; border-radius: 25px; font-weight: 600; }
+
+        /* ESTILO PARA BOTÓN DE CARRITO EN NAV */
+        .btn-carrito-nav { background-color: #2563eb; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-carrito-nav:hover { background-color: #1d4ed8; }
+        .badge-carrito { background: #ef4444; color: white; border-radius: 50%; padding: 0.1rem 0.5rem; font-size: 0.75rem; font-weight: 700; }
+
+        .hero { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; text-align: center; padding: 4rem 1.5rem; }
+        .hero h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin-bottom: 1rem; font-weight: 700; }
+        .hero p { font-size: clamp(1rem, 3vw, 1.15rem); color: #cbd5e1; max-width: 650px; margin: 0 auto 1.8rem; }
+        .hero-botones { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-principal { background-color: #2563eb; color: white; padding: 0.8rem 1.6rem; border-radius: 30px; text-decoration: none; font-weight: 600; }
+        .btn-secundario { background-color: #22c55e; color: white; padding: 0.8rem 1.6rem; border-radius: 30px; text-decoration: none; font-weight: 600; }
+
+        /* BUSCADOR AVANZADO */
+        .buscador-container { max-width: 700px; margin: -1.8rem auto 2rem; padding: 0 1.5rem; position: relative; z-index: 10; }
+        .buscador-wrapper { position: relative; display: flex; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 35px; overflow: hidden; background: #fff; border: 2px solid #e2e8f0; }
+        .buscador-input { width: 100%; padding: 0.9rem 1.5rem; border: none; outline: none; font-size: 1rem; color: #0f172a; }
+        .buscador-btn { background: #2563eb; color: white; border: none; padding: 0 1.5rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .buscador-btn:hover { background: #1d4ed8; }
+        
+        .sugerencias-box { position: absolute; top: 100%; left: 1.5rem; right: 1.5rem; background: #ffffff; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-top: 5px; max-height: 350px; overflow-y: auto; display: none; z-index: 100; text-align: left; border: 1px solid #e2e8f0; }
+        .sugerencia-item { padding: 0.8rem 1.2rem; border-bottom: 1px solid #f1f5f9; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+        .sugerencia-item:last-child { border-bottom: none; }
+        .sugerencia-item:hover { background: #f8fafc; }
+        .sugerencia-info span { display: block; }
+        .sugerencia-titulo { font-weight: 600; color: #0f172a; font-size: 0.95rem; }
+        .sugerencia-cat { font-size: 0.75rem; color: #64748b; }
+        .sugerencia-precio { font-weight: 700; color: #059669; font-size: 0.9rem; }
+
+        .seccion { max-width: 1200px; margin: 3.5rem auto; padding: 0 1.5rem; text-align: center; }
+        .seccion h2 { font-size: clamp(1.5rem, 4vw, 2rem); color: #0f172a; margin-bottom: 0.5rem; }
+        .seccion-subtitulo { color: #64748b; margin-bottom: 2rem; }
+
+        /* REQUERIMIENTO 2: TARJETAS DE ACCESO A TIENDAS */
+        .grid-tiendas-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .tarjeta-tienda { background: #ffffff; border: 2px solid #e2e8f0; border-radius: 16px; padding: 2.5rem 1.5rem; cursor: pointer; transition: all 0.3s ease; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .tarjeta-tienda:hover { border-color: #2563eb; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(37,99,235,0.1); }
+        .icono-tienda { font-size: 3.5rem; margin-bottom: 1rem; display: block; }
+        .tarjeta-tienda h3 { font-size: 1.3rem; color: #0f172a; margin-bottom: 0.5rem; font-weight: 700; }
+        .tarjeta-tienda p { font-size: 0.95rem; color: #64748b; }
+
+        .vista-tienda-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 1rem; }
+        .btn-volver { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-volver:hover { background: #e2e8f0; color: #0f172a; }
+        .titulo-tienda-activa { font-size: 1.8rem; color: #0f172a; font-weight: 700; margin: 0; }
+
+        .tienda-contenido { display: none; }
+        .tienda-contenido.active { display: block; }
+
+        .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .producto-card { position: relative; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s; }
+        .producto-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .producto-card.card-medicamento { cursor: pointer; }
+        .producto-img-wrapper { position: relative; width: 100%; height: 200px; }
+        .producto-img { width: 100%; height: 100%; object-fit: cover; background-color: #f1f5f9; }
+        .producto-info { padding: 1.2rem; text-align: left; display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
+        .producto-titulo { font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 0.4rem; }
+        .producto-desc { font-size: 0.85rem; color: #64748b; margin-bottom: 0.8rem; }
+        .producto-detalles { font-size: 0.8rem; color: #475569; background: #f8fafc; padding: 0.5rem; border-radius: 6px; margin-bottom: 0.8rem; }
+        .producto-precio { font-size: 1.15rem; font-weight: 700; color: #059669; margin-bottom: 0.8rem; }
+
+        .acciones-card { display: flex; flex-direction: column; gap: 0.5rem; }
+        .btn-prospecto { width: 100%; background-color: #f1f5f9; color: #2563eb; border: 1px solid #cbd5e1; padding: 0.55rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .btn-prospecto:hover { background-color: #e2e8f0; color: #1d4ed8; border-color: #93c5fd; }
+        
+        .card-cantidad-wrapper { display: flex; align-items: center; gap: 0.4rem; width: 100%; flex-wrap: wrap; }
+        .card-qty-control { display: flex; align-items: center; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; background: #f8fafc; }
+        .btn-card-qty { background: #e2e8f0; border: none; width: 28px; height: 34px; font-weight: bold; cursor: pointer; color: #0f172a; font-size: 0.9rem; }
+        .btn-card-qty:hover { background: #cbd5e1; }
+        .input-card-qty { width: 35px; border: none; text-align: center; font-weight: 600; font-size: 0.85rem; background: transparent; outline: none; }
+        
+        .select-talla-card { width: 100%; padding: 0.4rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: #0f172a; margin-bottom: 0.4rem; background: #fff; }
+
+        .btn-agregar-carrito { flex-grow: 1; background-color: #3b82f6; color: white; border: none; padding: 0.55rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; }
+        .btn-agregar-carrito:hover { background-color: #2563eb; }
+
+        .badge-disponibilidad { position: absolute; top: 12px; right: 12px; font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 20px; z-index: 5; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .badge-disponible { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .badge-nodisponible { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+        .producto-card[data-disponible="false"] { opacity: 0.75; }
+        .producto-card[data-disponible="false"] .producto-img { filter: grayscale(80%); }
+        .producto-card[data-disponible="false"] .btn-agregar-carrito,
+        .producto-card[data-disponible="false"] .btn-card-qty { background-color: #94a3b8; cursor: not-allowed; pointer-events: none; }
+
+        /* MODAL GENERAL Y PROSPECTO */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 1rem; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-out; }
+        .modal-contenido { background: #ffffff; width: 100%; max-width: 580px; border-radius: 12px; padding: 1.8rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); position: relative; max-height: 90vh; overflow-y: auto; text-align: left; }
+        .modal-cerrar { position: absolute; top: 1rem; right: 1.2rem; background: #f1f5f9; border: none; font-size: 1.2rem; cursor: pointer; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; color: #64748b; transition: all 0.2s; }
+        .modal-cerrar:hover { background: #e2e8f0; color: #0f172a; }
+        .prospecto-header { border-bottom: 2px solid #f1f5f9; padding-bottom: 0.8rem; margin-bottom: 1.2rem; }
+        .prospecto-titulo { font-size: 1.35rem; font-weight: 700; color: #0f172a; }
+        .prospecto-badge { display: inline-block; background: #eff6ff; color: #2563eb; font-size: 0.8rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 12px; margin-top: 0.4rem; border: 1px solid #bfdbfe; }
+        .prospecto-seccion { margin-bottom: 1.1rem; }
+        .prospecto-seccion h4 { font-size: 0.95rem; font-weight: 600; color: #2563eb; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem; }
+        .prospecto-seccion p { font-size: 0.9rem; color: #475569; line-height: 1.5; background: #f8fafc; padding: 0.7rem; border-radius: 8px; border-left: 3px solid #2563eb; }
+        .prospecto-aviso { background: #fef2f2; border-left: 4px solid #ef4444; padding: 0.8rem; border-radius: 8px; font-size: 0.8rem; color: #991b1b; margin-top: 1.2rem; }
+        .prospecto-footer { margin-top: 1.4rem; text-align: center; }
+
+        /* MODAL DE PEDIDO ESTILOS */
+        .modal-pedido-producto { display: flex; gap: 1rem; align-items: center; background: #f8fafc; padding: 1rem; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 1.2rem; }
+        .modal-pedido-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+        .modal-pedido-details { flex-grow: 1; }
+        .modal-pedido-details h3 { font-size: 1.05rem; color: #0f172a; margin-bottom: 0.2rem; }
+        .modal-pedido-details p { font-size: 0.95rem; font-weight: 700; color: #059669; }
+
+        /* ESTILOS DEL CARRITO EN MODAL */
+        .item-carrito { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid #f1f5f9; gap: 0.5rem; }
+        .item-carrito-info { flex-grow: 1; }
+        .item-carrito-nombre { font-size: 0.9rem; font-weight: 600; color: #0f172a; }
+        .item-carrito-precio { font-size: 0.85rem; color: #059669; font-weight: 600; }
+        .btn-eliminar-item { background: #fee2e2; color: #ef4444; border: none; padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+        .btn-eliminar-item:hover { background: #fecaca; }
+
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #0f172a; margin-bottom: 0.4rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.65rem 0.9rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; color: #0f172a; outline: none; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #2563eb; }
+
+        /* ESTILO DEL CHECKBOX DE RECOGIDA */
+        .checkbox-container { display: flex; align-items: center; gap: 0.6rem; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; cursor: pointer; }
+        .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: #10b981; }
+        .checkbox-container label { font-weight: 600; color: #065f46; cursor: pointer; margin-bottom: 0; font-size: 0.9rem; }
+
+        .cantidad-control { display: flex; align-items: center; gap: 0.5rem; }
+        .btn-qty { width: 36px; height: 36px; background: #e2e8f0; border: none; font-size: 1.2rem; font-weight: 600; border-radius: 8px; cursor: pointer; color: #0f172a; }
+        .btn-qty:hover { background: #cbd5e1; }
+        .input-qty { width: 60px !important; text-align: center; }
+
+        .aviso-tasas-pago {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid #2563eb;
+            color: #1e40af;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resumen-totales { background: #f1f5f9; padding: 1rem; border-radius: 8px; margin: 1.2rem 0; }
+        .resumen-linea { display: flex; justify-content: space-between; font-size: 0.9rem; color: #475569; margin-bottom: 0.4rem; }
+        .resumen-linea.total { font-size: 1.1rem; font-weight: 700; color: #0f172a; border-top: 1px dashed #cbd5e1; padding-top: 0.5rem; margin-top: 0.5rem; margin-bottom: 0; }
+
+        .btn-confirmar-pedido { width: 100%; background-color: #10b981; color: white; border: none; padding: 0.85rem; border-radius: 12px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: background 0.2s; text-align: center; }
+        .btn-confirmar-pedido:hover { background-color: #059669; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+        /* MENSAJERÍA */
+        .fondo-gris { background-color: #ffffff; padding: 2.5rem 1.5rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); }
+        .grid-tarifas { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; text-align: left; }
+        .tarifa-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.2rem; }
+        .tarifa-card h4 { color: #2563eb; font-size: 1.1rem; margin-bottom: 0.8rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 0.3rem; }
+        .tarifa-card ul { list-style: none; padding: 0; }
+        .tarifa-card li { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; }
+        .tarifa-card li:last-child { border-bottom: none; }
+        .tarifa-card li span { font-weight: 600; color: #059669; }
+
+        .destacado { background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; padding: 3.5rem 1.5rem; border-radius: 20px; }
+        .destacado h2 { color: white; }
+        .pasos-promotor { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; margin: 2rem 0; }
+        .paso { background: rgba(255, 255, 255, 0.15); padding: 1.5rem 1rem; border-radius: 12px; }
+        .paso span { display: inline-block; background: white; color: #059669; width: 35px; height: 35px; line-height: 35px; border-radius: 50%; font-weight: 700; margin-bottom: 0.8rem; }
+        .btn-whatsapp { display: inline-block; background-color: #ffffff; color: #059669; font-weight: 700; padding: 0.9rem 2rem; border-radius: 30px; text-decoration: none; }
+
+        .caja-contacto { background: #ffffff; padding: 2rem 1.5rem; border-radius: 16px; max-width: 700px; margin: 1.5rem auto 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: left; }
+        .aviso-salida { background-color: #fff7ed; color: #c2410c; padding: 1rem; border-radius: 10px; border: 1px solid #ffedd5; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; justify-content: center; }
+        .info-ubicacion p { margin-bottom: 0.6rem; font-size: 0.95rem; }
+        .referencias-box { background: #f1f5f9; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-size: 0.9rem; border-left: 4px solid #2563eb; }
+        .mapa { margin-top: 1.5rem; border-radius: 12px; overflow: hidden; }
+
+        footer { background-color: #0f172a; color: #94a3b8; text-align: center; padding: 2rem 1rem; margin-top: 4rem; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background-color: #ffffff; padding: 1.5rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); gap: 1.2rem; }
+            .nav-links.active { display: flex; }
+            
+            .grid-productos {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+            .producto-info {
+                padding: 0.8rem;
+            }
+            .producto-img-wrapper {
+                height: 140px;
+            }
+            .producto-titulo {
+                font-size: 0.95rem;
+            }
+            .producto-desc {
+                font-size: 0.75rem;
+            }
+            .producto-precio {
+                font-size: 0.95rem;
+            }
+            .btn-agregar-carrito {
+                font-size: 0.75rem;
+                padding: 0.4rem;
+            }
+            .btn-card-qty {
+                width: 22px;
+                height: 28px;
+            }
+            .input-card-qty {
+                width: 25px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+         2. ESTRUCTURA HTML
+    =========================================== -->
+    <header>
+        <nav>
+            <div class="logo">Drop Store</div>
+            <button class="menu-toggle" id="mobile-menu" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html#tiendas">Nuestras Tiendas</a></li>
+                <li><a href="servicios.html">Servicios Mascotas</a></li>
+                <li><a href="#envios">Mensajería</a></li>
+                <li><a href="#ubicacion">Ubicación</a></li>
+                <li><a href="afiliados.html" class="btn-destacado">Gana Comisiones</a></li>
+                <li>
+                    <button class="btn-carrito-nav" id="btn-abrir-carrito">
+                        🛒 Carrito <span class="badge-carrito" id="contador-carrito">0</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- VISTA PRINCIPAL (PORTADA) -->
+    <div id="vista-principal">
+        <section class="hero">
+            <h1>Todo lo que necesitas en un solo lugar</h1>
+            <p>Medicamentos, Taller Personalizado, Mascotas y Misceláneas.</p>
+            <div class="hero-botones">
+                <a href="#tiendas" class="btn-principal">Explorar Tiendas</a>
+                <button type="button" class="btn-secundario" id="btn-hero-carrito" style="border: none; cursor: pointer;">
+                    🛒 Carrito <span class="badge-carrito" id="contador-carrito-hero">0</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- BUSCADOR AVANZADO -->
+        <div class="buscador-container">
+            <div class="buscador-wrapper">
+                <input type="text" id="input-busqueda" class="buscador-input" placeholder="🔍 Busca un producto o escribe algo similar (ej: pastilla, jarra, perro...)" autocomplete="off">
+                <button class="buscador-btn" id="btn-buscar">Buscar</button>
+            </div>
+            <div id="sugerencias-box" class="sugerencias-box"></div>
+        </div>
+
+        <!-- 1. PRODUCTOS DESTACADOS -->
+        <section id="destacados" class="seccion">
+            <h2>🔥 Productos Destacados</h2>
+            <p class="seccion-subtitulo">Sugerencias aleatorias de nuestros productos disponibles</p>
+            <div class="grid-productos" id="grid-destacados"></div>
+        </section>
+
+        <!-- 2. EXPLORADOR POR TIENDAS (REQUERIMIENTO 2: TARJETAS DE ACCESO) -->
+        <section id="tiendas" class="seccion">
+            <h2>🛍️ Nuestras Tiendas</h2>
+            <p class="seccion-subtitulo">Selecciona la tienda que deseas consultar</p>
+
+            <div class="grid-tiendas-cards">
+                <div class="tarjeta-tienda" onclick="abrirVistaTienda('tienda-medicamentos')">
+                    <span class="icono-tienda">💊</span>
+                    <h3>Medicamentos y Salud</h3>
+                    <p>Variedad en tratamientos y salud general.</p>
+                </div>
+                <div class="tarjeta-tienda" onclick="abrirVistaTienda('tienda-taller')">
+                    <span class="icono-tienda">🎨</span>
+                    <h3>Taller Personalizado</h3>
+                    <p>Artículos únicos, pullovers, tazas y grabado personalizado.</p>
+                </div>
+                <div class="tarjeta-tienda" onclick="abrirVistaTienda('tienda-mascotas')">
+                    <span class="icono-tienda">🐾</span>
+                    <h3>Mascotas</h3>
+                    <p>Alimento, accesorios, juguetes y cuidados veterinarios.</p>
+                </div>
+                <div class="tarjeta-tienda" onclick="abrirVistaTienda('tienda-miscelaneas')">
+                    <span class="icono-tienda">📦</span>
+                    <h3>Misceláneas</h3>
+                    <p>Luces LED, humidificadores, accesorios y tecnología.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TARIFAS DE MENSAJERÍA -->
+        <section id="envios" class="seccion fondo-gris">
+            <h2>🚚 Servicio de Mensajería</h2>
+            <p class="seccion-subtitulo">Tarifas fijas de entrega a domicilio según tu municipio</p>
+            <div class="grid-tarifas" id="grid-tarifas-info"></div>
+        </section>
+
+        <!-- 5. PROGRAMA DE AFILIADOS / PROMOTORES -->
+        <section id="afiliados" class="seccion destacado">
+            <h2>💰 ¡Gana Dinero Promocionando Nuestros Productos!</h2>
+            <p style="color: #e2e8f0; margin-bottom: 1.5rem;">Únete a nuestro equipo de promotores y gana una comisión por cada venta realizada a través de ti.</p>
+            
+            <div class="pasos-promotor">
+                <div class="paso">
+                    <span>1</span>
+                    <h3>Únete</h3>
+                    <p>Contáctanos por WhatsApp para registrarte como promotor autorizado.</p>
+                </div>
+                <div class="paso">
+                    <span>2</span>
+                    <h3>Comparte</h3>
+                    <p>Publica nuestros productos en tus redes o estados con tu enlace/código.</p>
+                </div>
+                <div class="paso">
+                    <span>3</span>
+                    <h3>Gana</h3>
+                    <p>Recibe tu comisión de forma inmediata por cada cliente confirmado.</p>
+                </div>
+            </div>
+
+            <a href="afiliados.html" class="btn-whatsapp">Ver Información de Afiliados</a>
+        </section>
+
+        <!-- 6. UBICACIÓN Y RECOGIDA EN LOCAL -->
+        <section id="ubicacion" class="seccion">
+            <h2>📍 Ubicación y Punto de Recogida</h2>
+            <p class="seccion-subtitulo">Puedes recoger tus pedidos directamente en nuestro local</p>
+
+            <div class="caja-contacto">
+                <div class="aviso-salida">
+                    <span>🚨</span> Por favor, contáctanos antes de salir para confirmar stock y coordinar la entrega.
+                </div>
+
+                <div class="info-ubicacion">
+                    <p><strong>🏠 Dirección:</strong> Calle 160 Edif C46 apto 22 entre Avenida 7ma y 5ta g. Alamar .Habana del Este. Habana</p>
+                    <p><strong>📞 Teléfono / WhatsApp:</strong> +53 54731530</p>
+                    
+                    <div class="referencias-box">
+                        <strong>📌 Referencias cercanas para llegar fácil:</strong>
+                        <ul style="margin-left: 1.2rem; margin-top: 0.5rem; color: #475569;">
+                            <li>Frente a la segunda parada del P3 en Alamar.</li>
+                            <li>Cerca del Parque Hanoi.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mapa">
+                    <iframe src="https://maps.google.com/maps?q=23.1565581,-82.2820207&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%" height="280" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- VISTA SECUNDARIA DE TIENDAS (APARTADO INDEPENDIENTE SPA) -->
+    <div id="vista-secundaria" style="display: none; max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; min-height: 70vh;">
+        <div class="vista-tienda-header">
+            <button onclick="volverInicio()" class="btn-volver">
+                <span>⬅</span> Volver al Inicio
+            </button>
+            <h2 id="titulo-vista-tienda" class="titulo-tienda-activa">Nombre de la Tienda</h2>
+        </div>
+
+        <div id="tienda-medicamentos" class="tienda-contenido">
+            <div class="grid-productos"></div>
+        </div>
+        <div id="tienda-taller" class="tienda-contenido">
+            <div class="grid-productos"></div>
+        </div>
+        <div id="tienda-mascotas" class="tienda-contenido">
+            <div class="grid-productos"></div>
+        </div>
+        <div id="tienda-miscelaneas" class="tienda-contenido">
+            <div class="grid-productos"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Drop Store. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- MODAL DE PROSPECTO -->
+    <div id="modal-prospecto" class="modal-overlay">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btn-cerrar-prospecto">&times;</button>
+            <div class="prospecto-header">
+                <h3 id="prospecto-nombre" class="prospecto-titulo">Nombre Medicamento</h3>
+                <span id="prospecto-formula" class="prospecto-badge">Fórmula/Presentación</span>
+            </div>
+            
+            <div class="prospecto-seccion">
+                <h4>💡 ¿Para qué sirve? (Indicaciones)</h4>
+                <p id="prospecto-uso">Cargando...</p>
+            </div>
+
+            <div class="prospecto-seccion">
+                <h4>📋 ¿Cómo se debe tomar / usar? (Dosis)</h4>
+                <p id="prospecto-dosis">Cargando...</p>
+            </div>
+
+            <div class="prospecto-seccion">
+                <h4>⚠️ Precauciones y Contraindicaciones</h4>
+                <p id="prospecto-contraindicaciones">Cargando...</p>
+            </div>
+
+            <div class="prospecto-aviso">
+                <strong>Nota Médica Importante:</strong> Esta información es strictly orientativa. No sustituye la consulta ni prescripción de un profesional de la salud.
+            </div>
+
+            <div class="prospecto-footer">
+                <button type="button" class="btn-principal" id="btn-pedir-prospecto">Hacer Pedido de este Producto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE PEDIDO INDIVIDUAL / CARRITO -->
+    <div id="modal-pedido" class="modal-overlay">
+        <div class="modal-contenido">
+            <button class="modal-cerrar" id="btn-cerrar-pedido">&times;</button>
+            <h2 style="font-size: 1.3rem; margin-bottom: 1rem; color: #0f172a;" id="modal-pedido-titulo">Finalizar Pedido</h2>
+            
+            <div id="vista-producto-unico" class="modal-pedido-producto">
+                <img id="modal-img" src="" alt="" class="modal-pedido-img">
+                <div class="modal-pedido-details">
+                    <h3 id="modal-nombre">Producto</h3>
+                    <p id="modal-precio">0 CUP</p>
+                </div>
+            </div>
+
+            <div id="vista-carrito-compras" style="display: none; margin-bottom: 1.2rem;">
+                <div id="lista-items-carrito" style="max-height: 200px; overflow-y: auto; margin-bottom: 1rem;"></div>
+            </div>
+
+            <form id="form-pedido">
+                <div class="form-group">
+                    <label for="input-nombre">Nombre y Apellidos:</label>
+                    <input type="text" id="input-nombre" placeholder="Ej: Juan Pérez González" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-telefono">Número de Teléfono Móvil:</label>
+                    <input type="tel" id="input-telefono" placeholder="Ej: +53 51234567" required>
+                </div>
+
+                <!-- CHECKBOX INTUITIVO DE RECOGIDA EN LOCAL -->
+                <div class="checkbox-container">
+                    <input type="checkbox" id="check-recogida">
+                    <label for="check-recogida">📍 Recogeré mi pedido directamente en el Local (Alamar)</label>
+                </div>
+
+                <!-- CONTENEDOR DE DIRECCIÓN -->
+                <div id="contenedor-direccion" class="form-group">
+                    <label for="input-direccion">Dirección Exacta de Entrega:</label>
+                    <textarea id="input-direccion" rows="2" placeholder="Calle, entre calles, # de casa, apto, reparto" required></textarea>
+                </div>
+
+                <!-- BLOQUE INFORMATIVO RECOGIDA EN LOCAL -->
+                <div id="info-recogida-local" class="form-group" style="display: none; background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; padding: 1rem; border-radius: 8px;">
+                    <p style="font-weight: 700; color: #0f172a; margin-bottom: 0.5rem;">📍 Información para Recogida en Local:</p>
+                    <p style="font-size: 0.85rem; color: #475569; margin-bottom: 0.3rem;"><strong>🏠 Dirección:</strong> Calle 160 Edif C46 apto 22 entre Avenida 7ma y 5ta g. Alamar, Habana del Este, Habana.</p>
+                    <p style="font-size: 0.85rem; color: #475569; margin-bottom: 0.3rem;"><strong>⏰ Horario:</strong> Generalmente de 1:00 PM a 6:00 PM.</p>
+                    <p style="font-size: 0.85rem; color: #b91c1c; font-weight: 600; margin-bottom: 0.3rem;">🎟️ Es obligatorio mostrar el VALE / comprobante generado al llegar al local para retirar su pedido.</p>
+                    <p style="font-size: 0.85rem; color: #c2410c;">🚨 Por favor, contáctanos antes de salir para confirmar stock.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-horario">Horario disponible para recibir el pedido (Opcional):</label>
+                    <input type="text" id="input-horario" placeholder="Por lo general las entregas son de 1 a 6 pm. Ej: Disponible de 2 pm a 5 pm">
+                </div>
+
+                <div class="form-group" id="grupo-cantidad">
+                    <label>Cantidad:</label>
+                    <div class="cantidad-control">
+                        <button type="button" class="btn-qty" id="btn-qty-minus">-</button>
+                        <input type="number" id="input-cantidad" class="input-qty" value="1" min="1" readonly>
+                        <button type="button" class="btn-qty" id="btn-qty-plus">+</button>
+                    </div>
+                </div>
+
+                <div class="form-group" id="contenedor-select-envio">
+                    <label for="select-envio">Método de Entrega / Municipio:</label>
+                    <select id="select-envio" required></select>
+                </div>
+
+                <div class="aviso-tasas-pago">
+                    <span>💡</span>
+                    <div>De igual forma se acepta el pago al cambio tanto en dólares (USD) como en CUP.</div>
+                </div>
+
+                <div class="resumen-totales">
+                    <div class="resumen-linea">
+                        <span>Subtotal Productos:</span>
+                        <span id="resumen-subtotal">0 CUP</span>
+                    </div>
+                    <div class="resumen-linea">
+                        <span>Costo de Envío:</span>
+                        <span id="resumen-envio">0 CUP</span>
+                    </div>
+                    <div class="resumen-linea total">
+                        <span>Total Estimado:</span>
+                        <span id="resumen-total">0 CUP</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-confirmar-pedido">Enviar Pedido por WhatsApp 📲</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         3. LÓGICA JAVASCRIPT
+    =========================================== -->
+    <script>
+        const TARIFAS_MENSAJERIA = [
+            {
+                zona: "Zona Alamar y Alrededores",
+                municipios: [
+                    { nombre: "Alamar", precio: 500 },
+                    { nombre: "Cojímar", precio: 600 },
+                    { nombre: "Bahía", precio: 600 },
+                    { nombre: "Villa Panamericana", precio: 600 },
+                    { nombre: "Camilo", precio: 700 },
+                    { nombre: "Casa Blanca", precio: 800 },
+                    { nombre: "Guanabacoa", precio: 800 },
+                    { nombre: "Regla", precio: 800 },
+                    { nombre: "Guanabacoa Santafé", precio: 800 },
+                    { nombre: "Guanabacoa Distante", precio: 1000 },
+                    { nombre: "Tarará", precio: 1000 },
+                    { nombre: "Guanabo", precio: 1800 },
+                    { nombre: "Campo Florido", precio: 2200 }
+                ]
+            },
+            {
+                zona: "Zona Centro",
+                municipios: [
+                    { nombre: "Habana", precio: 1000 },
+                    { nombre: "Cerro", precio: 1200 },
+                    { nombre: "Vedado", precio: 1200 },
+                    { nombre: "Plaza", precio: 1300 }
+                ]
+            },
+            {
+                zona: "Playa, Marianao, Lisa",
+                municipios: [
+                    { nombre: "Hasta Calle 100", precio: 1600 },
+                    { nombre: "De Calle 100 a 200", precio: 2000 },
+                    { nombre: "De Calle 200 a 300", precio: 3000 }
+                ]
+            },
+            {
+                zona: "Región Oeste",
+                municipios: [
+                    { nombre: "San Miguel", precio: 1200 },
+                    { nombre: "San Francisco", precio: 1500 },
+                    { nombre: "10 de Octubre", precio: 1500 },
+                    { nombre: "Arroyo Naranjo", precio: 1500 },
+                    { nombre: "Eléctrico", precio: 2000 },
+                    { nombre: "Calabazar", precio: 3000 },
+                    { nombre: "Las Guásimas", precio: 4000 },
+                    { nombre: "Lenin", precio: 4000 }
+                ]
+            },
+            {
+                zona: "Boyeros",
+                municipios: [
+                    { nombre: "Boyeros hasta Calle 114 (CUJAE)", precio: 2000 },
+                    { nombre: "Boyeros De 114 a 202 (Terminal 1)", precio: 2500 },
+                ]
+            },
+            {
+                zona: "Zona Cotorro y Alrededores",
+                municipios: [
+                    { nombre: "Cotorro", precio: 1500 },
+                    { nombre: "Cotorro Alberro", precio: 2000 },
+                    { nombre: "Cotorro Lotería", precio: 2500 },
+                    { nombre: "Cotorro Complejo Lácteo", precio: 3000 },
+                    { nombre: "Cotorro 4 Caminos", precio: 3500 }
+                ]
+            }
+        ];
+
+        const BASE_PROSPECTOS = {
+            "test-embarazo": {
+                nombre: "Test de Embarazo (Tiritas)",
+                formula: "Tira reactiva HCG",
+                uso: "Detección cualitativa rápida de la hormona gonadotropina coriónica humana (hCG) en orina para el diagnóstico temprano del embarazo.",
+                dosis: "Recolectar muestra de orina en un recipiente limpio. Sumergir la tira hasta la línea marcada durante 10-15 segundos. Retirar, colocar en superficie plana y leer los resultados a los 3-5 minutos (No interpretar pasados los 10 min).",
+                contraindicaciones: "Resultados falsos pueden ocurrir por infecciones urinarias, quistes ováricos o lecturas fuera del tiempo estipulado."
+            },
+            "pildora-emergencia": {
+                nombre: "Píldora del día después",
+                formula: "Levonorgestrel 1.5 mg",
+                uso: "Anticonceptivo de urgencia destinado a prevenir el embarazo tras una relación sexual no protegida o fallo anticonceptivo.",
+                dosis: "Tomar 1 comprimido lo antes posible, preferiblemente dentro de las primeras 12 a 24 horas y no más tarde de las 72 horas (3 días) posteriores a la relación sexual.",
+                contraindicaciones: "No debe usarse como método anticonceptivo habitual. Puede causar náuseas, fatiga, dolor abdominal o alteraciones en el ciclo menstrual inmediato."
+            },
+            "Oceira Anticonceptiva": {
+                nombre: "Oceiras (Anticonceptivo oral diario)",
+                formula: "Levonorgestrel 0.15 mg, Etinilestradiol 0.03mg",
+                uso: "Anticonceptivo hormonal oral de uso regular para prevenir el embarazo de forma planificada y continua.",
+                dosis: "Tomar 1 comprimido al día, preferiblemente a la misma hora, durante 21 días consecutivos, seguido de un intervalo de 7 días de descanso (o según la presentación del blíster).",
+                contraindicaciones: "Antecedentes de trombosis o eventos cardiovasculares, enfermedad hepática grave, cáncer hormonodependiente (mama o endometrio), hipertensión no controlada, tabaquismo en mayores de 35 años o embarazo confirmada."
+            },
+            "ovulos-clotrimazol": {
+                nombre: "Óvulos de Clotrimazol",
+                formula: "Clotrimazol 100 mg",
+                uso: "Tratamiento de infecciones vaginales por hongos (Candidiasis vaginal). Redujo el picazón, ardor y flujo anómalo.",
+                dosis: "Introducir 1 óvulo por la noche profundamente en la vagina durante 5 días consecutivos. Se recomienda realizarlo acostada.",
+                contraindicaciones: "Hipersensibilidad al clotrimazol. No usar durante la menstruación. Evitar relaciones sexuales durante el tratamiento."
+            },
+            "ovulos-nistatina": {
+                nombre: "Óvulos de Nistatina",
+                formula: "Nistatina 100 000 UI",
+                uso: "Antifúngico indicado en la candidiasis vulvovaginal.",
+                dosis: "Aplicar 1 óvulo vaginal diariamente por las noches antes de dormir, durante 10 a 14 días seguidos según indicación.",
+                contraindicaciones: "Hipersensibilidad al principio activo. Suspender si ocurre irritación local severa."
+            },
+            "ovulos-combinados": {
+                nombre: "Óvulos de Metronidazol + Nistatina",
+                formula: "Metronidazol 500 mg + Nistatina 100 000 UI",
+                uso: "Tratamiento de infecciones vaginales mixtas (bacterianas y fúngicas) como vaginitis por Trichomonas o Candida.",
+                dosis: "1 óvulo por la noche en la vagina profunda durante 10 días seguidos.",
+                contraindicaciones: "Evitar el consumo de alcohol durante el tratamiento y hasta 48 horas después (efecto disulfiram). Hipersensibilidad a componentes."
+            },
+            "sulfaprim": {
+                nombre: "Sulfaprim",
+                formula: "Sulfametoxazol + Trimetoprima (960 mg)",
+                uso: "Antibiótico de amplio espectro para infecciones urinarias, respiratorias y gastrointestinales de origen bacteriano.",
+                dosis: "Tomar 1 tableta cada 12 horas bajo prescripción médica y acompañado de abundante agua.",
+                contraindicaciones: "No administrar en personas alérgicas a las sulfonamidas, con insuficiencia renal o hepática grave o durante el embarazo."
+            },
+            "paracetamol": {
+                nombre: "Paracetamol",
+                formula: "Paracetamol 500 mg",
+                uso: "Analgésico y antipirético. Indicado para el alivio del dolor leve a moderado (cabeza, muscular, dental) y reducción de la fiebre.",
+                dosis: "1 cápsula/tableta de 500 mg cada 6 a 8 horas según la necesidad. No exceder de 4 g (8 tabletas) al día.",
+                contraindicaciones: "Usar con precaución en pacientes con enfermedades hepáticas. Evitar la ingesta conjunta con alcohol."
+            },
+            "diclofenaco-paracetamol": {
+                nombre: "Diclofenaco Sódico + Paracetamol",
+                formula: "Diclofenaco 50 mg + Paracetamol 500 mg",
+                uso: "Antiinflamatorio, analgésico y antipirético. Tratamiento de dolores articulares, inflamaciones intensas, traumatismos o dolores postquirúrgicos.",
+                dosis: "1 cápsula cada 8 a 12 horas preferentemente después de consumir alimentos.",
+                contraindicaciones: "No tomar en caso de úlcera gástrica, gastritis severa o insuficiencia renal. Evitar si se es alérgico a los AINEs."
+            },
+            "fluconazol": {
+                nombre: "Fluconazol",
+                formula: "Fluconazol 150 mg",
+                uso: "Antifúngico oral sintético. Utilizado para candidiasis vaginal, candidiasis oral y otras micosis sistémicas o cutáneas.",
+                dosis: "Para candidiasis vaginal aguda: Dosis única de 1 cápsula (150 mg). Otras micosis según indicación médica.",
+                contraindicaciones: "Hipersensibilidad a compuestos azólicos. Precaución si se combina con otros medicamentos de metabolización hepática."
+            },
+            "captopril": {
+                nombre: "Captopril",
+                formula: "Captopril 25 mg",
+                uso: "Antihipertensivo (Inhibidor de la ECA). Control de la presión arterial elevada e insuficiencia cardíaca.",
+                dosis: "Según indicación médica estricta. Generalmente 1/2 a 1 tableta administrada 1 hora antes de las comidas.",
+                contraindicaciones: "Contraindicado en el embarazo, angioedema previo o estenosis renal bilateral."
+            },
+            "enalapril": {
+                nombre: "Enalapril",
+                formula: "Enalapril 20 mg",
+                uso: "Tratamiento de la hipertensión arterial y la insuficiencia cardíaca.",
+                dosis: "Administrar vía oral según indicación del médico (frecuentemente 1 tabletas diaria de 10mg o 20mg).",
+                contraindicaciones: "Embarazo, lactancia, antecedentes de angioedema asociado a IECA."
+            },
+            "gravinol": {
+                nombre: "Gravinol (Dimenhidrinato)",
+                formula: "Dimenhidrinato 50 mg",
+                uso: "Prevención y tratamiento de mareos, vértigos, náuseas y vómitos por movimiento (cinetosis).",
+                dosis: "1 a 2 tabletas 30 minutos antes de iniciar un viaje. Repetir cada 4-6 horas si es necesario.",
+                contraindicaciones: "Puede producir somnolencia intensa. Evitar conducir o manejar maquinaria. Precaución en glaucoma o hipertrofia prostática."
+            },
+            "sildenafil": {
+                nombre: "Sildenafil",
+                formula: "Sildenafil 100 mg",
+                uso: "Tratamiento de la disfunción eréctil en hombres adultos.",
+                dosis: "1 tableta administrada de 30 a 60 minutos antes de la actividad sexual. Máximo 1 toma al día.",
+                contraindicaciones: "ESTRICTAMENTE CONTRAINDICADO el uso con nitratos o donadores de óxido nítrico (usados para el dolor de pecho). Evitar en cardiopatías graves."
+            },
+            "loratadina": {
+                nombre: "Loratadina",
+                formula: "Loratadina 10 mg",
+                uso: "Antihistamínico no sedante. Alivio de síntomas de alergias rinitis, estornudos, secreción nasal y urticaria.",
+                dosis: "1 tableta (10 mg) una vez al día.",
+                contraindicaciones: "Hipersensibilidad al componente. Ajustar dosis en pacientes con insuficiencia hepática severa."
+            },
+            "difenhidramina": {
+                nombre: "Difenhidramina (Benadrilina)",
+                formula: "Difenhidramina 25 mg",
+                uso: "Antihistamínico. Alivio de reacciones alérgicas, picazones de la piel y como auxiliar insomnio ocasional.",
+                dosis: "1 a 2 tabletas cada 6 u 8 horas según necesidad o antes de dormir.",
+                contraindicaciones: "Causa somnolencia importante. No consumir alcohol. Evitar en pacientes con asma severo o glaucoma."
+            },
+            "vitamina-c": {
+                nombre: "Vitamina C",
+                formula: "Ácido Ascórbico 500 mg",
+                uso: "Suplemento vitamínico. Refuerza el sistema inmunológico, antioxidante y favorece la cicatrización.",
+                dosis: "Masticar 1 tableta diariamente.",
+                contraindicaciones: "Dosis muy elevadas pueden causar malestar estomacal o piedras en el riñón en personas predispuestas."
+            }
+        };
+
+        const PRODUCTOS = [
+            { id: "test-embarazo", nombre: "Test de Embarazo", precio: "250 CUP", numericPrecio: 250, moneda: "CUP", desc: "Para estar seguros.", img: "uploads/productos/Test-de-tiritas.jpg", placeholder: "https://via.placeholder.com/300x200?text=Test+de+Embarazo", categoria: "tienda-medicamentos", tags: "test embarazo tiritas prueba salud", disponible: true, prospecto: true },
+            { id: "pildora-emergencia", nombre: "Píldora del día después", precio: "700 CUP", numericPrecio: 700, moneda: "CUP", desc: "Misma fórmula efectiva. Se entrega según disponibilidad de stock.", img: "uploads/productos/pildora-emergencia.jpg", placeholder: "https://via.placeholder.com/300x200?text=Pildora+de+Emergencia", categoria: "tienda-medicamentos", tags: "pildora pastilla emergencia anticonceptiva medicamento salud", disponible: true, prospecto: true },
+            { id: "Oceira Anticonceptiva", nombre: "Oceira", precio: "1000 CUP", numericPrecio: 1000, moneda: "CUP", desc: "Misma fórmula efectiva. Se entrega según disponibilidad de stock.", img: "uploads/productos/oceiras.jpg", placeholder: "https://via.placeholder.com/300x200?text=Pildora+de+Emergencia", categoria: "tienda-medicamentos", tags: "pildora pastilla emergencia anticonceptiva medicamento salud", disponible: true, prospecto: true },
+            { id: "ovulos-clotrimazol", nombre: "Óvulos de Clotrimazol", precio: "750 CUP", numericPrecio: 750, moneda: "CUP", desc: "Blíster de 5 óvulos de 100 mg.", img: "uploads/productos/ovulos-clotrimazol.jpg", placeholder: "https://via.placeholder.com/300x200?text=Ovulos+Clotrimazol", categoria: "tienda-medicamentos", tags: "ovulos clotrimazol infeccion hongos salud", disponible: true, prospecto: true },
+            { id: "ovulos-nistatina", nombre: "Óvulos de Nistatina", precio: "750 CUP", numericPrecio: 750, moneda: "CUP", desc: "Blíster de 5 óvulos de 100 000 UI.", img: "uploads/productos/ovulos-nistatina.jpg", placeholder: "https://via.placeholder.com/300x200?text=Ovulos+Nistatina", categoria: "tienda-medicamentos", tags: "ovulos nistatina infeccion hongos salud", disponible: true, prospecto: true },
+            { id: "ovulos-Met/nist", nombre: "Óvulos de Metronidazol + Nistatina", precio: "750 CUP", numericPrecio: 750, moneda: "CUP", desc: "Blíster de 5 óvulos (Metronidazol 500 mg + Nistatina 100 000 UI).", img: "uploads/productos/ovulos-combinados.jpg", placeholder: "https://via.placeholder.com/300x200?text=Ovulos+Combinados", categoria: "tienda-medicamentos", tags: "ovulos metronidazol nistatina combinados infeccion salud", disponible: false, prospecto: true },
+            { id: "sulfaprim", nombre: "Sulfaprim", precio: "500 CUP", numericPrecio: 500, moneda: "CUP", desc: "Blíster de 10 píldoras de 960 mg.", img: "uploads/productos/sulfaprim.jpg", placeholder: "https://via.placeholder.com/300x200?text=Sulfaprim", categoria: "tienda-medicamentos", tags: "sulfaprim pastilla antibiotico bliseter salud", disponible: true, prospecto: true },
+            { id: "paracetamol", nombre: "Paracetamol", precio: "450 CUP", numericPrecio: 450, moneda: "CUP", desc: "Blíster de 10 cápsulas de 500 mg.", img: "uploads/productos/paracetamol.jpg", placeholder: "https://via.placeholder.com/300x200?text=Paracetamol", categoria: "tienda-medicamentos", tags: "paracetamol pastilla fiebre dolor dolor de cabeza salud", disponible: true, prospecto: true },
+            { id: "diclofenaco-paracetamol", nombre: "Diclofenaco Sódico + Paracetamol", precio: "650 CUP", numericPrecio: 650, moneda: "CUP", desc: "Blíster de 10 cápsulas (Paracetamol 500 mg + Diclofenaco 50 mg).", img: "uploads/productos/diclofenaco-paracetamol.jpg", placeholder: "https://via.placeholder.com/300x200?text=Diclofenaco+Paracetamol", categoria: "tienda-medicamentos", tags: "diclofenaco paracetamol dolor inflamacion pastilla salud", disponible: true, prospecto: true },
+            { id: "fluconazol", nombre: "Fluconazol", precio: "350 CUP", numericPrecio: 350, moneda: "CUP", desc: "1 pastilla de 150 mg.", img: "uploads/productos/fluconazol.jpg", placeholder: "https://via.placeholder.com/300x200?text=Fluconazol", categoria: "tienda-medicamentos", tags: "fluconazol hongos pastilla salud", disponible: true, prospecto: true },
+            { id: "captopril", nombre: "Captopril", precio: "450 CUP", numericPrecio: 450, moneda: "CUP", desc: "Blíster de 10 cápsulas de 25 mg.", img: "uploads/productos/captopril.jpg", placeholder: "https://via.placeholder.com/300x200?text=Captopril", categoria: "tienda-medicamentos", tags: "captopril presion arterial tension pastilla salud", disponible: true, prospecto: true },
+            { id: "enalapril", nombre: "Enalapril", precio: "450 CUP", numericPrecio: 450, moneda: "CUP", desc: "Blíster de 10 cápsulas de 20 mg.", img: "uploads/productos/enalapril.jpg", placeholder: "https://via.placeholder.com/300x200?text=Enalapril", categoria: "tienda-medicamentos", tags: "enalapril presion arterial tension pastilla salud", disponible: true, prospecto: true },
+            { id: "gravinol", nombre: "Gravinol (Dimenhidrinato)", precio: "450 CUP", numericPrecio: 450, moneda: "CUP", desc: "Blíster de 10 cápsulas de 50 mg.", img: "uploads/productos/gravinol.jpg", placeholder: "https://via.placeholder.com/300x200?text=Gravinol", categoria: "tienda-medicamentos", tags: "gravinol dimenhidrinato mareo vomito pastilla salud", disponible: true, prospecto: true },
+            { id: "sildenafil", nombre: "Sildenafil", precio: "800 CUP", numericPrecio: 800, moneda: "CUP", desc: "Blíster de 10 cápsulas de 100 mg.", img: "uploads/productos/sildenafil.jpg", placeholder: "https://via.placeholder.com/300x200?text=Sildenafil", categoria: "tienda-medicamentos", tags: "sildenafil potencia pastilla azul salud", disponible: true, prospecto: true },
+            { id: "loratadina", nombre: "Loratadina", precio: "450 CUP", numericPrecio: 450, moneda: "CUP", desc: "Blíster de 10 cápsulas de 10 mg.", img: "uploads/productos/loratadina.jpg", placeholder: "https://via.placeholder.com/300x200?text=Loratadina", categoria: "tienda-medicamentos", tags: "loratadina alergia estornudo pastilla salud", disponible: true, prospecto: true },
+            { id: "difenhidramina", nombre: "Difenhidramina (Benadrilina)", precio: "450 CUP", numericPrecio: 450, moneda: "CUP", desc: "Blíster de 10 tabletas de 25 mg.", img: "uploads/productos/difenhidramina.jpg", placeholder: "https://via.placeholder.com/300x200?text=Difenhidramina", categoria: "tienda-medicamentos", tags: "difenhidramina benadrilina alergia sueno pastilla salud", disponible: true, prospecto: true },
+            { id: "vitamina-c", nombre: "Vitamina C", precio: "700 CUP", numericPrecio: 700, moneda: "CUP", desc: "Tabletas masticables (Blíster de 10 tabletas de 500 mg).", img: "uploads/productos/vitamina-c.jpg", placeholder: "https://via.placeholder.com/300x200?text=Vitamina+C", categoria: "tienda-medicamentos", tags: "vitamina c pastilla masticable defensas salud", disponible: false, prospecto: true },
+
+            { id: "pullover-blanco", nombre: "Pullovers Personalizados Blancos", precio: "5 USD", numericPrecio: 5, moneda: "USD", desc: "Tela DryFit 100% poliéster.", detalles: "<strong>Tallas:</strong> Adulto (S,M,L,XL) | Niños (1, 4)", img: "uploads/productos/pullover-blanco.jpg", placeholder: "https://via.placeholder.com/300x200?text=Pullover+Blanco", categoria: "tienda-taller", tags: "pullover camisa blusa blanco dryfit ropa taller", disponible: true, tallas: ["Adulto S", "Adulto M", "Adulto L", "Adulto XL", "Niño Talla 1", "Niño Talla 4"] },
+            { id: "pullover-beich", nombre: "Pullovers Personalizados Beich", precio: "5 USD", numericPrecio: 5, moneda: "USD", desc: "Tela Poliespander de gran suavidad y ajuste.", detalles: "<strong>Tallas Adulto:</strong> S, L, XL", img: "uploads/productos/pullover-beich.jpg", placeholder: "https://via.placeholder.com/300x200?text=Pullover+Beich", categoria: "tienda-taller", tags: "pullover camisa beich beige poliespander ropa taller", disponible: true, tallas: ["Adulto S", "Adulto L", "Adulto XL"] },
+            { id: "pullover-negro", nombre: "Pullovers Negros", precio: "7 USD", numericPrecio: 7, moneda: "USD", desc: "Ideal para cafeterías y negocios. Diseños sencillos y pocos colores.", detalles: "<strong>Tela:</strong> 100% poliéster | <strong>Tallas:</strong> XS, S, M, L, XL", img: "uploads/productos/pullover-negro.jpg", placeholder: "https://via.placeholder.com/300x200?text=Pullover+Negro", categoria: "tienda-taller", tags: "pullover negro camisa ropa negocio taller", disponible: true, tallas: ["XS", "S", "M", "L", "XL"] },
+            { id: "tie-dye", nombre: "Pullovers estilo Tie Dye", precio: "5 USD", numericPrecio: 5, moneda: "USD", desc: "Estilo diferente y colorido.", img: "uploads/productos/tie-dye.jpg", placeholder: "https://via.placeholder.com/300x200?text=Tie+Dye", categoria: "tienda-taller", tags: "pullover tie dye colores ropa taller", disponible: true, tallas: ["S", "M", "L", "XL"] },
+            { id: "enguatada", nombre: "Enguatadas Personalizadas", precio: "5 USD", numericPrecio: 5, moneda: "USD", desc: "Tela DryFit de excelente calidad.", detalles: "<strong>Talla Adulto:</strong> S", img: "uploads/productos/enguatada.jpg", placeholder: "https://via.placeholder.com/300x200?text=Enguatadas", categoria: "tienda-taller", tags: "enguatada abrigo buzo sudadera dryfit taller", disponible: true, tallas: ["Adulto S"] },
+            { id: "gorra", nombre: "Gorras Personalizadas", precio: "5 USD", numericPrecio: 5, moneda: "USD", desc: "Material de malla y poliéster. Talla única.", detalles: "<strong>Colores:</strong> Azul claro, Azul oscuro, Negro, Blanco", img: "uploads/productos/gorra.jpg", placeholder: "https://via.placeholder.com/300x200?text=Gorras", categoria: "tienda-taller", tags: "gorra sombrero gorras taller", disponible: true },
+            { id: "jarra-blanca", nombre: "Jarras Blancas", precio: "3 USD", numericPrecio: 3, moneda: "USD", desc: "Jarras con asa e interior blanco personalizables.", img: "uploads/productos/jarra-blanca.jpg", placeholder: "https://via.placeholder.com/300x200?text=Jarra+Blanca", categoria: "tienda-taller", tags: "jarra taza blanca ceramica taller", disponible: true },
+            { id: "jarra-magica", nombre: "Jarras Mágicas", precio: "3 USD", numericPrecio: 3, moneda: "USD", desc: "El diseño se revela con líquidos calientes.", detalles: "<strong>Color:</strong> Negro Mate", img: "uploads/productos/jarra-magica.jpg", placeholder: "https://via.placeholder.com/300x200?text=Jarra+Magica", categoria: "tienda-taller", tags: "jarra taza magica calor negro mate taller", disponible: true },
+            { id: "jarra-cristal", nombre: "Jarras de Cristal", precio: "5 USD", numericPrecio: 5, moneda: "USD", desc: "Jarras de cristal de 16 oz en color blanco.", img: "uploads/productos/jarra-cristal.jpg", placeholder: "https://via.placeholder.com/300x200?text=Jarra+Cristal", categoria: "tienda-taller", tags: "jarra taza cristal vidrio blanco taller", disponible: true },
+            { id: "jarra-termica", nombre: "Jarras Térmicas", precio: "10 USD", numericPrecio: 10, moneda: "USD", desc: "Mantienen el frío o calor. Se personalizan en la parte ancha.", detalles: "<strong>Material:</strong> Metal y plástico | <strong>Capacidad:</strong> 11 oz", img: "uploads/productos/jarra-termica.jpg", placeholder: "https://via.placeholder.com/300x200?text=Jarra+Termica", categoria: "tienda-taller", tags: "jarra taza termica metal plastico taller", disponible: true },
+            { id: "pomo-termo", nombre: "Pomos Termo", precio: "17 USD", numericPrecio: 17, moneda: "USD", desc: "Acabado brillante, conserva bebidas frías y calientes.", detalles: "<strong>Material:</strong> Metal | <strong>Tapa:</strong> Acrílico transparente", img: "uploads/productos/pomo-termo.jpg", placeholder: "https://via.placeholder.com/300x200?text=Pomo+Termo", categoria: "tienda-taller", tags: "pomo termo botella metal acrilico taller", disponible: true },
+            { id: "agenda", nombre: "Agendas Personalizadas", precio: "1 USD", numericPrecio: 1, moneda: "USD", desc: "Portada e interior 100% a tu medida en cartulina Brisol o cartón de alta calidad.", detalles: "• Tapa dura (Media carta): $5 USD<br>• Con anillos (Media carta): $2 USD<br>• Mini agenda con anillos: $1 USD", img: "uploads/productos/agenda.jpg", placeholder: "https://via.placeholder.com/300x200?text=Agendas", categoria: "tienda-taller", tags: "agenda libreta notas taller", disponible: true },
+            { id: "llavero", nombre: "Llaveros Personalizados", precio: "2 USD", numericPrecio: 2, moneda: "USD", desc: "Material de acrílico duradero.", detalles: "<strong>Tamaño:</strong> 5x5 cm | <strong>Forma:</strong> Círculo", img: "uploads/productos/llavero.jpg", placeholder: "https://via.placeholder.com/300x200?text=Llaveros", categoria: "tienda-taller", tags: "llavero acrilico llaves taller", disponible: true },
+            { id: "identificacion", nombre: "Identificaciones Acrílicas", precio: "1 USD", numericPrecio: 1, moneda: "USD", desc: "Ideales para mascotas o uso personal.", detalles: "<strong>Tamaño:</strong> 5x3 cm<br>• Sola: $1 USD<br>• Conjunto con collar: $3 USD", img: "uploads/productos/identificacion.jpg", placeholder: "https://via.placeholder.com/300x200?text=Identificacion", categoria: "tienda-taller", tags: "identificacion chapa acrilico mascota taller", disponible: true },
+            { id: "portacelular", nombre: "Porta Celulares", precio: "3 USD", numericPrecio: 3, moneda: "USD", desc: "Se personalizan por todos los lados con fotos, letras o lo que desees.", detalles: "<strong>Material:</strong> Acrilico | <strong>Tamaño:</strong> 19x9 cm", img: "uploads/productos/portacelular.jpg", placeholder: "https://via.placeholder.com/300x200?text=Porta+Celular", categoria: "tienda-taller", tags: "porta celular soporte acrilico taller", disponible: true },
+            { id: "popsocket", nombre: "Pop Socket", precio: "2 USD", numericPrecio: 2, moneda: "USD", desc: "Soporte práctico para tu teléfono celular.", detalles: "<strong>Material:</strong> Plástico | <strong>Diámetro:</strong> 4 cm | <strong>Color:</strong> Blanco", img: "uploads/productos/popsocket.jpg", placeholder: "https://via.placeholder.com/300x200?text=Pop+Socket", categoria: "tienda-taller", tags: "popsocket soporte celular taller", disponible: true },
+            { id: "targetas-negocios", nombre: "Targetas de Negocio", precio: "250 CUP", numericPrecio: 250, moneda: "CUP", desc: "Llega a mas clientes de la formas mas efectiva.", detalles: "<strong>Formato:</strong> Hoja A4", img: "uploads/productos/targetas-negocios.jpg", placeholder: "https://via.placeholder.com/300x200?text=Stickers", categoria: "tienda-taller", tags: "targetas presentacion cartulina taller", disponible: true },
+            { id: "stickers", nombre: "Stickers Personalizados", precio: "2 USD", numericPrecio: 2, moneda: "USD", desc: "Personaliza tus ventas o marcas con nuestros adhesivos.", detalles: "<strong>Formato:</strong> Hoja A4", img: "uploads/productos/stickers.jpg", placeholder: "https://via.placeholder.com/300x200?text=Stickers", categoria: "tienda-taller", tags: "stickers pegatinas adhesivos taller", disponible: true },
+
+            { id: "vacuna-nobivac", nombre: "Vacuna Pentavalente Nobivac", precio: "10 USD", numericPrecio: 10, moneda: "USD", desc: "Protección integral para tu mascota.", img: "uploads/productos/vacuna-nobivac.jpg", placeholder: "https://via.placeholder.com/300x200?text=Vacuna+Pentavalente", categoria: "tienda-mascotas", tags: "vacuna pentavalente nobivac perro mascota salud", disponible: true },
+            { id: "prazican-f", nombre: "Prazican-F", precio: "300 CUP", numericPrecio: 300, moneda: "CUP", desc: "Antiparasitario interno.", detalles: "Solo con mensajería a La Habana.", img: "uploads/productos/prazican-f.jpg", placeholder: "https://via.placeholder.com/300x200?text=Prazican-F", categoria: "tienda-mascotas", tags: "prazican antiparasitario interno perro gato mascota", disponible: true },
+            { id: "adipet", nombre: "Adipet", precio: "300 CUP", numericPrecio: 300, moneda: "CUP", desc: "Antiparasitario interno (Igual al Vermic total).", img: "uploads/productos/adipet.jpg", placeholder: "https://via.placeholder.com/300x200?text=Adipet", categoria: "tienda-mascotas", tags: "adipet vermic antiparasitario interno perro gato mascota", disponible: false },
+            { id: "simparica", nombre: "Simparica", precio: "12 USD", numericPrecio: 12, moneda: "USD", desc: "Antiparasitario externo de uso oral.", img: "uploads/productos/simparica.jpg", placeholder: "https://via.placeholder.com/300x200?text=Simparica", categoria: "tienda-mascotas", tags: "simparica antiparasitario perro mascota garrapata pulga oral", disponible: true },
+            { id: "friponil", nombre: "Friponil", precio: "150 CUP", numericPrecio: 150, moneda: "CUP", desc: "Pipeta para pulgas y garrapatas de uso tópico.", img: "uploads/productos/friponil.jpg", placeholder: "https://via.placeholder.com/300x200?text=Friponil", categoria: "tienda-mascotas", tags: "friponil pipeta pulga garrapata mascota", disponible: true },
+            { id: "amitraz", nombre: "Amitraz", precio: "100 CUP", numericPrecio: 100, moneda: "CUP", desc: "Pipeta para la sarna de uso tópico.", img: "uploads/productos/amitraz.jpg", placeholder: "https://via.placeholder.com/300x200?text=Amitraz", categoria: "tienda-mascotas", tags: "amitraz pipeta sarna mascota", disponible: true },
+            { id: "cera-almohadillas", nombre: "Cera para Almohadillas", precio: "120 CUP", numericPrecio: 120, moneda: "CUP", desc: "Protección e hidratación para sus patitas.", img: "uploads/productos/cera-almohadillas.jpg", placeholder: "https://via.placeholder.com/300x200?text=Cera+Almohadillas", categoria: "tienda-mascotas", tags: "cera almohadillas patas perro gato mascota", disponible: true },
+            { id: "collar-huellitas", nombre: "Collares con Huellitas", precio: "1 USD", numericPrecio: 1, moneda: "USD", desc: "Regulables con cascabel.", img: "uploads/productos/collar-huellitas.jpg", placeholder: "https://via.placeholder.com/300x200?text=Collar+Huellitas", categoria: "tienda-mascotas", tags: "collar huellitas perro gato mascota", disponible: true },
+            { id: "collar-reflectante", nombre: "Collares Reflectantes", precio: "1 USD", numericPrecio: 1, moneda: "USD", desc: "Regulables con cascabel, mayor visibilidad nocturna.", img: "uploads/productos/collar-reflectante.jpg", placeholder: "https://via.placeholder.com/300x200?text=Collar+Reflectante", categoria: "tienda-mascotas", tags: "collar reflectante perro gato mascota", disponible: true },
+            { id: "collar-estrellas", nombre: "Collares con Estrellas", precio: "1 USD", numericPrecio: 1, moneda: "USD", desc: "Regulables con cascabel.", img: "uploads/productos/collar-estrellas.jpg", placeholder: "https://via.placeholder.com/300x200?text=Collar+Estrellas", categoria: "tienda-mascotas", tags: "collar estrellas perro gato mascota", disponible: true },
+            { id: "collar-lazo", nombre: "Collares con Lazo", precio: "1 USD", numericPrecio: 1, moneda: "USD", desc: "Regulables con cascabel.", img: "uploads/productos/collar-lazo.jpg", placeholder: "https://via.placeholder.com/300x200?text=Collar+Lazo", categoria: "tienda-mascotas", tags: "collar lazo perro gato mascota", disponible: true },
+            { id: "collar-pajarita", nombre: "Collares con Pajarita de Gamuza", precio: "3 USD", numericPrecio: 3, moneda: "USD", desc: "Regulables con cascabel. Elegancia única.", img: "uploads/productos/collar-pajarita.jpg", placeholder: "https://via.placeholder.com/300x200?text=Collar+Pajarita", categoria: "tienda-mascotas", tags: "collar pajarita gamuza perro gato mascota", disponible: true },
+            { id: "collar-perros-grandes", nombre: "Collares para Perros Grandes", precio: "8 USD", numericPrecio: 8, moneda: "USD", desc: "Resistentes y regulables.", img: "uploads/productos/collar-perros-grandes.jpg", placeholder: "https://via.placeholder.com/300x200?text=Collar+Perros+Grandes", categoria: "tienda-mascotas", tags: "collar perros grandes mascota", disponible: true },
+            { id: "collar-isabelino", nombre: "Collares Isabelinos", precio: "4 USD", numericPrecio: 4, moneda: "USD", desc: "Para postoperatorio, tallas pequeñas.", img: "uploads/productos/collar-isabelino.jpg", placeholder: "https://via.placeholder.com/300x200?text=Collar+Isabelino", categoria: "tienda-mascotas", tags: "collar isabelino postoperatorio cono mascota", disponible: true },
+            { id: "correa-retractil", nombre: "Correa Retráctil", precio: "8 USD", numericPrecio: 8, moneda: "USD", desc: "Comodidad y control durante el paseo.", img: "uploads/productos/correa-retractil.jpg", placeholder: "https://via.placeholder.com/300x200?text=Correa+Retractil", categoria: "tienda-mascotas", tags: "correa retractil paseo perro mascota", disponible: true },
+            { id: "cepillo-mascotas", nombre: "Cepillo para Mascotas", precio: "9 USD", numericPrecio: 9, moneda: "USD", desc: "Ideal para el cuidado diario del pelaje.", img: "uploads/productos/cepillo-mascotas.jpg", placeholder: "https://via.placeholder.com/300x200?text=Cepillo", categoria: "tienda-mascotas", tags: "cepillo pelo cerdas mascota perro gato", disponible: true },
+            { id: "pelotas-platillo", nombre: "Pelotas Platillo", precio: "8 USD", numericPrecio: 8, moneda: "USD", desc: "Bastante grandes para mayor diversión.", img: "uploads/productos/pelotas-platillo.jpg", placeholder: "https://via.placeholder.com/300x200?text=Pelota+Platillo", categoria: "tienda-mascotas", tags: "pelota platillo juguete perro mascota", disponible: true },
+            { id: "laser-gatos", nombre: "Láser para Gatos", precio: "3 USD", numericPrecio: 3, moneda: "USD", desc: "Juguete interactivo para horas de entretenimiento.", img: "uploads/productos/laser-gatos.jpg", placeholder: "https://via.placeholder.com/300x200?text=Laser+Gatos", categoria: "tienda-mascotas", tags: "laser gato juguete mascota", disponible: true },
+            { id: "juguete-soga", nombre: "Juguete en Forma de Soga", precio: "5 USD", numericPrecio: 5, moneda: "USD", desc: "Resistente para morder y jugar.", img: "uploads/productos/juguete-soga.jpg", placeholder: "https://via.placeholder.com/300x200?text=Juguete+Soga", categoria: "tienda-mascotas", tags: "juguete soga cuerda perro mascota", disponible: true },
+            { id: "peluche-mascotas", nombre: "Peluche para Mascotas", precio: "1500 CUP", numericPrecio: 1500, moneda: "CUP", desc: "Suave y divertido acompañante.", img: "uploads/productos/peluche-mascotas.jpg", placeholder: "https://via.placeholder.com/300x200?text=Peluche", categoria: "tienda-mascotas", tags: "peluche juguete perro gato mascota", disponible: true },
+            { id: "gafas-lujo", nombre: "Gafas de Lujo", precio: "3.5 USD", numericPrecio: 3.5, moneda: "USD", desc: "Accesorio único y diferente para tus fotos.", img: "uploads/productos/gafas-lujo.jpg", placeholder: "https://via.placeholder.com/300x200?text=Gafas+de+Lujo", categoria: "tienda-mascotas", tags: "gafas lentes lujo accesorio perro gato mascota", disponible: true },
+            { id: "localizador-mascotas", nombre: "Localizador para Mascotas", precio: "8 USD", numericPrecio: 8, moneda: "USD", desc: "Mantén a tu mascota siempre rastreada y segura.", img: "uploads/productos/localizador-mascotas.jpg", placeholder: "https://via.placeholder.com/300x200?text=Localizador", categoria: "tienda-mascotas", tags: "localizador gps rastreador mascota", disponible: true },
+
+            { id: "Conectores-MC4", nombre: "Conectores MC4", precio: "2 USD", numericPrecio: 2, moneda: "USD", desc: "Conectores de paneles solares. Mensajeria gratis para mas de 20 parejas. ", img: "uploads/productos/mc4.jpg", placeholder: "https://via.placeholder.com/300x200?text=Luces+Led+5M", categoria: "tienda-miscelaneas", tags: "conectores paneles mc4 solar", disponible: true },
+            { id: "Audifonos-Phillips", nombre: "Audifonos Phillips", precio: "20 USD", numericPrecio: 20, moneda: "USD", desc: "Audifonos de calidad con reduccion de ruido en el microfono . ", img: "uploads/productos/audifonos.jpg", placeholder: "https://via.placeholder.com/300x200?text=Luces+Led+5M", categoria: "tienda-miscelaneas", tags: "audifonos audio musica phillips ", disponible: true },
+            { id: "luces-led-5m", nombre: "Luces Led 5M", precio: "13 USD", numericPrecio: 13, moneda: "USD", desc: "Ambientación para tu espacio o habitación.", img: "uploads/productos/luces-led-5m.jpg", placeholder: "https://via.placeholder.com/300x200?text=Luces+Led+5M", categoria: "tienda-miscelaneas", tags: "luces led 5m tira iluminacion miscelaneas", disponible: true },
+            { id: "luces-led-10m", nombre: "Luces Led Música 10M", precio: "16 USD", numericPrecio: 16, moneda: "USD", desc: "Ritmo y color integrados.", img: "uploads/productos/luces-led-10m.jpg", placeholder: "https://via.placeholder.com/300x200?text=Luces+Led+10M", categoria: "tienda-miscelaneas", tags: "luces led musica 10m tira iluminacion miscelaneas", disponible: true },
+            { id: "luces-led-15m", nombre: "Luces Led Música 15M", precio: "18 USD", numericPrecio: 18, moneda: "USD", desc: "Máxima cobertura con sincronización musical.", img: "uploads/productos/luces-led-15m.jpg", placeholder: "https://via.placeholder.com/300x200?text=Luces+Led+15M", categoria: "tienda-miscelaneas", tags: "luces led musica 15m tira iluminacion miscelaneas", disponible: true },
+            { id: "luces-espejo", nombre: "Luces de Espejo de Tocador", precio: "20 USD", numericPrecio: 20, moneda: "USD", desc: "Iluminación profesional para maquillaje y estilo.", img: "uploads/productos/luces-espejo.jpg", placeholder: "https://via.placeholder.com/300x200?text=Luces+Espejo", categoria: "tienda-miscelaneas", tags: "luces espejo tocador maquillaje miscelaneas", disponible: true },
+            { id: "humidificadores", nombre: "Humidificadores", precio: "7 USD", numericPrecio: 7, moneda: "USD", desc: "Mantiene el ambiente fresco. ¡Incluye aroma de regalo al azar!", img: "uploads/productos/humidificadores.jpg", placeholder: "https://via.placeholder.com/300x200?text=Humidificador", categoria: "tienda-miscelaneas", tags: "humidificador difusor aroma vapor miscelaneas", disponible: true },
+            { id: "aromas-5ml", nombre: "Aromas Aceites Esenciales (5 ml)", precio: "2 USD", numericPrecio: 2, moneda: "USD", desc: "Fragancias concentradas para difusores.", img: "uploads/productos/aromas-5ml.jpg", placeholder: "https://via.placeholder.com/300x200?text=Aromas+5ml", categoria: "tienda-miscelaneas", tags: "aroma aceites esenciales 5ml fragancia difusor miscelaneas", disponible: true },
+            { id: "aromas-10ml", nombre: "Aromas Aceites Esenciales (10 ml)", precio: "3 USD", numericPrecio: 3, moneda: "USD", desc: "Presentación grande de fragancias varias.", img: "uploads/productos/aromas-10ml.jpg", placeholder: "https://via.placeholder.com/300x200?text=Aromas+10ml", categoria: "tienda-miscelaneas", tags: "aroma aceites esenciales 10ml fragancia difusor miscelaneas", disponible: true },
+            { id: "palo-selfie", nombre: "Palo de Selfie Completo", precio: "12 USD", numericPrecio: 12, moneda: "USD", desc: "Con control remoto inalámbrico y Luz LED integrada.", img: "uploads/productos/palo-selfie.jpg", placeholder: "https://via.placeholder.com/300x200?text=Palo+Selfie", categoria: "tienda-miscelaneas", tags: "palo selfie bluetooth luz led tripode miscelaneas", disponible: true }
+        ];
+
+        let CARRITO = [];
+        let MODO_PEDIDO = "CARRITO"; 
+        let PRODUCTO_ACTUAL = null;
+        let PRODUCTO_ACTUAL_TALLA = "";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initMenuMobile();
+            gestionarComercialURL();
+            propagacionEnlacesInternos();
+            renderizarPestanasYProductos();
+            renderizarDestacados();
+            renderizarTarifas();
+            initBuscador();
+            initModales();
+            cargarOpcionesEnvio();
+        });
+
+        /* REQUERIMIENTO 2: FUNCIONES PARA VISTA DINÁMICA DE TIENDAS */
+        function abrirVistaTienda(categoria) {
+            document.getElementById('vista-principal').style.display = 'none';
+            document.getElementById('vista-secundaria').style.display = 'block';
+
+            const titulos = {
+                'tienda-medicamentos': '💊 Medicamentos y Salud',
+                'tienda-taller': '🎨 Taller Personalizado',
+                'tienda-mascotas': '🐾 Mascotas',
+                'tienda-miscelaneas': '📦 Misceláneas'
+            };
+            document.getElementById('titulo-vista-tienda').innerText = titulos[categoria] || "Tienda";
+
+            document.querySelectorAll('.tienda-contenido').forEach(el => el.classList.remove('active'));
+            document.getElementById(categoria).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function volverInicio() {
+            document.getElementById('vista-secundaria').style.display = 'none';
+            document.getElementById('vista-principal').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ==========================================
+           SISTEMA DE AFILIADOS / COMERCIALES
+        =========================================== */
+        function gestionarComercialURL() {
+            const params = new URLSearchParams(window.location.search);
+            const refVal = params.get('ref') || params.get('c') || params.get('comercial');
+
+            if (refVal) {
+                const nombreLimpio = decodeURIComponent(refVal.trim());
+                let tagComercial = nombreLimpio;
+                if (!nombreLimpio.toLowerCase().startsWith('c ')) {
+                    tagComercial = 'C ' + nombreLimpio.charAt(0).toUpperCase() + nombreLimpio.slice(1);
+                }
+                localStorage.setItem('drop_comercial', tagComercial);
+            }
+        }
+
+        function obtenerComercialActivo() {
+            return localStorage.getItem('drop_comercial') || null;
+        }
+
+        function propagacionEnlacesInternos() {
+            const comercial = obtenerComercialActivo();
+            if (!comercial) return;
+
+            const nombrePure = comercial.replace(/^C\s+/i, '');
+            const links = document.querySelectorAll('a[href]');
+
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:') || href.includes('wa.me')) {
+                    return;
+                }
+
+                try {
+                    const url = new URL(href, window.location.href);
+                    if (url.origin === window.location.origin) {
+                        url.searchParams.set('ref', nombrePure);
+                        link.setAttribute('href', url.pathname + url.search + url.hash);
+                    }
+                } catch (e) {
+                    console.error("Error al procesar URL del enlace:", e);
+                }
+            });
+        }
+
+        function initMenuMobile() {
+            const toggle = document.getElementById("mobile-menu");
+            const nav = document.getElementById("nav-links");
+            if (toggle && nav) {
+                toggle.addEventListener("click", () => {
+                    nav.classList.toggle("active");
+                });
+            }
+        }
+
+        function crearTarjetaHTML(prod) {
+            const badgeClass = prod.disponible ? "badge-disponible" : "badge-nodisponible";
+            const badgeTexto = prod.disponible ? "Disponible" : "Agotado";
+
+            let botonProspectoHTML = "";
+            if (prod.prospecto) {
+                botonProspectoHTML = `<button type="button" class="btn-prospecto" onclick="event.stopPropagation(); abrirProspecto('${prod.id}')">📋 Ver Prospecto Médico</button>`;
+            }
+
+            const detallesHTML = prod.detalles ? `<div class="producto-detalles">${prod.detalles}</div>` : "";
+
+            let selectorTallaHTML = "";
+            if (prod.tallas && prod.tallas.length > 0) {
+                let opciones = `<option value="">-- Seleccionar Talla --</option>`;
+                prod.tallas.forEach(t => {
+                    opciones += `<option value="${t}">${t}</option>`;
+                });
+                selectorTallaHTML = `<select id="talla-card-${prod.id}" class="select-talla-card" onclick="event.stopPropagation();">${opciones}</select>`;
+            }
+
+            return `
+                <div class="producto-card ${prod.prospecto ? 'card-medicamento' : ''}" data-disponible="${prod.disponible}" onclick="${prod.prospecto ? `abrirProspecto('${prod.id}')` : ''}">
+                    <span class="badge-disponibilidad ${badgeClass}">${badgeTexto}</span>
+                    <div class="producto-img-wrapper">
+                        <img src="${prod.img}" alt="${prod.nombre}" class="producto-img" onerror="this.src='${prod.placeholder}'">
+                    </div>
+                    <div class="producto-info">
+                        <div>
+                            <h3 class="producto-titulo">${prod.nombre}</h3>
+                            <p class="producto-desc">${prod.desc}</p>
+                            ${detallesHTML}
+                        </div>
+                        <div>
+                            <div class="producto-precio">${prod.precio}</div>
+                            ${selectorTallaHTML}
+                            <div class="acciones-card">
+                                ${botonProspectoHTML}
+                                <div class="card-cantidad-wrapper" onclick="event.stopPropagation();">
+                                    <div class="card-qty-control">
+                                        <button type="button" class="btn-card-qty" onclick="cambiarCantidadTarjeta('${prod.id}', -1)">-</button>
+                                        <input type="number" id="qty-card-${prod.id}" class="input-card-qty" value="1" min="1" readonly>
+                                        <button type="button" class="btn-card-qty" onclick="cambiarCantidadTarjeta('${prod.id}', 1)">+</button>
+                                    </div>
+                                    <button type="button" class="btn-agregar-carrito" onclick="event.stopPropagation(); agregarAlCarritoDesdeTarjeta('${prod.id}')">🛒 Agregar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function cambiarCantidadTarjeta(prodId, delta) {
+            const input = document.getElementById(`qty-card-${prodId}`);
+            if (input) {
+                let actual = parseInt(input.value) || 1;
+                actual += delta;
+                if (actual < 1) actual = 1;
+                input.value = actual;
+            }
+        }
+
+        function agregarAlCarritoDesdeTarjeta(prodId) {
+            const prod = PRODUCTOS.find(p => p.id === prodId);
+            if (!prod || !prod.disponible) return;
+
+            let tallaSeleccionada = "";
+            if (prod.tallas && prod.tallas.length > 0) {
+                const selectTalla = document.getElementById(`talla-card-${prodId}`);
+                if (selectTalla) {
+                    tallaSeleccionada = selectTalla.value;
+                    if (!tallaSeleccionada) {
+                        alert("Por favor, selecciona una talla disponible antes de agregar al carrito.");
+                        return;
+                    }
+                }
+            }
+
+            const input = document.getElementById(`qty-card-${prodId}`);
+            const cantidad = input ? parseInt(input.value) || 1 : 1;
+
+            agregarAlCarrito(prod, cantidad, tallaSeleccionada);
+            if (input) input.value = 1;
+        }
+
+        function renderizarPestanasYProductos() {
+            const categorias = ["tienda-medicamentos", "tienda-taller", "tienda-mascotas", "tienda-miscelaneas"];
+            categorias.forEach(cat => {
+                const contenedor = document.querySelector(`#${cat} .grid-productos`);
+                if (contenedor) {
+                    const prods = PRODUCTOS.filter(p => p.categoria === cat);
+                    contenedor.innerHTML = prods.map(crearTarjetaHTML).join("");
+                }
+            });
+        }
+
+        function renderizarDestacados() {
+            const contenedor = document.getElementById("grid-destacados");
+            if (!contenedor) return;
+
+            const disponibles = PRODUCTOS.filter(p => p.disponible);
+            const mezclados = [...disponibles].sort(() => 0.5 - Math.random());
+            const seleccionados = mezclados.slice(0, 4);
+
+            contenedor.innerHTML = seleccionados.map(crearTarjetaHTML).join("");
+        }
+
+        function renderizarTarifas() {
+            const contenedor = document.getElementById("grid-tarifas-info");
+            if (!contenedor) return;
+
+            contenedor.innerHTML = TARIFAS_MENSAJERIA.map(zona => `
+                <div class="tarifa-card">
+                    <h4>${zona.zona}</h4>
+                    <ul>
+                        ${zona.municipios.map(m => `
+                            <li><span>${m.nombre}</span> <span>${m.precio} CUP</span></li>
+                        `).join("")}
+                    </ul>
+                </div>
+            `).join("");
+        }
+
+        function initBuscador() {
+            const input = document.getElementById("input-busqueda");
+            const box = document.getElementById("sugerencias-box");
+            const btn = document.getElementById("btn-buscar");
+
+            if (!input || !box) return;
+
+            input.addEventListener("input", (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                if (query.length < 2) {
+                    box.style.display = "none";
+                    return;
+                }
+
+                const resultados = PRODUCTOS.filter(p => 
+                    p.nombre.toLowerCase().includes(query) || 
+                    p.desc.toLowerCase().includes(query) || 
+                    p.tags.toLowerCase().includes(query)
+                );
+
+                if (resultados.length === 0) {
+                    box.innerHTML = `<div class="sugerencia-item"><span>No se encontraron productos relacionados</span></div>`;
+                } else {
+                    box.innerHTML = resultados.map(p => `
+                        <div class="sugerencia-item" onclick="seleccionarSugerencia('${p.id}')">
+                            <div class="sugerencia-info">
+                                <span class="sugerencia-titulo">${p.nombre}</span>
+                                <span class="sugerencia-cat">${p.desc}</span>
+                            </div>
+                            <span class="sugerencia-precio">${p.precio}</span>
+                        </div>
+                    `).join("");
+                }
+                box.style.display = "block";
+            });
+
+            if (btn) {
+                btn.addEventListener("click", () => {
+                    const query = input.value.toLowerCase().trim();
+                    if (query.length >= 2) {
+                        const encontrado = PRODUCTOS.find(p => 
+                            p.nombre.toLowerCase().includes(query) || 
+                            p.tags.toLowerCase().includes(query)
+                        );
+                        if (encontrado) {
+                            seleccionarSugerencia(encontrado.id);
+                        }
+                    }
+                });
+            }
+
+            document.addEventListener("click", (e) => {
+                if (!input.contains(e.target) && !box.contains(e.target)) {
+                    box.style.display = "none";
+                }
+            });
+        }
+
+        function seleccionarSugerencia(prodId) {
+            const box = document.getElementById("sugerencias-box");
+            if (box) box.style.display = "none";
+
+            const prod = PRODUCTOS.find(p => p.id === prodId);
+            if (!prod) return;
+
+            abrirVistaTienda(prod.categoria);
+
+            if (prod.prospecto) {
+                abrirProspecto(prod.id);
+            }
+        }
+
+        function initModales() {
+            const modalProspecto = document.getElementById("modal-prospecto");
+            const modalPedido = document.getElementById("modal-pedido");
+            const btnCerrarProspecto = document.getElementById("btn-cerrar-prospecto");
+            const btnCerrarPedido = document.getElementById("btn-cerrar-pedido");
+            const btnPedirProspecto = document.getElementById("btn-pedir-prospecto");
+            const btnAbrirCarrito = document.getElementById("btn-abrir-carrito");
+			const btnHeroCarrito = document.getElementById("btn-hero-carrito");
+			
+			if (btnHeroCarrito) {
+    			btnHeroCarrito.addEventListener("click", () => {
+    			    if (CARRITO.length === 0) {
+     			       alert("El carrito está vacío. Agrega productos antes de realizar el pedido.");
+    			        return;
+    			    }
+    			    abrirModalCarrito();
+ 			   });
+			}
+
+            if (btnCerrarProspecto) btnCerrarProspecto.addEventListener("click", () => modalProspecto.classList.remove("active"));
+            if (btnCerrarPedido) btnCerrarPedido.addEventListener("click", () => modalPedido.classList.remove("active"));
+
+            [modalProspecto, modalPedido].forEach(m => {
+                if (m) {
+                    m.addEventListener("click", (e) => {
+                        if (e.target === m) m.classList.remove("active");
+                    });
+                }
+            });
+
+            if (btnPedirProspecto) {
+                btnPedirProspecto.addEventListener("click", () => {
+                    if (PRODUCTO_ACTUAL) {
+                        modalProspecto.classList.remove("active");
+                        abrirModalPedidoUnico(PRODUCTO_ACTUAL);
+                    }
+                });
+            }
+
+            if (btnAbrirCarrito) {
+                btnAbrirCarrito.addEventListener("click", () => {
+                    if (CARRITO.length === 0) {
+                        alert("El carrito está vacío. Agrega productos antes de realizar el pedido.");
+                        return;
+                    }
+                    abrirModalCarrito();
+                });
+            }
+
+            const btnMinus = document.getElementById("btn-qty-minus");
+            const btnPlus = document.getElementById("btn-qty-plus");
+            const inputQty = document.getElementById("input-cantidad");
+
+            if (btnMinus && btnPlus && inputQty) {
+                btnMinus.addEventListener("click", () => {
+                    let val = parseInt(inputQty.value) || 1;
+                    if (val > 1) {
+                        inputQty.value = val - 1;
+                        actualizarResumenTotales();
+                    }
+                });
+
+                btnPlus.addEventListener("click", () => {
+                    let val = parseInt(inputQty.value) || 1;
+                    inputQty.value = val + 1;
+                    actualizarResumenTotales();
+                });
+            }
+
+            const checkRecogida = document.getElementById("check-recogida");
+            if (checkRecogida) {
+                checkRecogida.addEventListener("change", () => {
+                    gestionarCamposEnvio();
+                    actualizarResumenTotales();
+                });
+            }
+
+            const selectEnvio = document.getElementById("select-envio");
+            if (selectEnvio) {
+                selectEnvio.addEventListener("change", actualizarResumenTotales);
+            }
+
+            const formPedido = document.getElementById("form-pedido");
+            if (formPedido) {
+                formPedido.addEventListener("submit", procesarEnvioWhatsApp);
+            }
+        }
+
+        function gestionarCamposEnvio() {
+            const checkRecogida = document.getElementById("check-recogida");
+            const contenedorDireccion = document.getElementById("contenedor-direccion");
+            const inputDireccion = document.getElementById("input-direccion");
+            const infoRecogida = document.getElementById("info-recogida-local");
+            const contenedorSelectEnvio = document.getElementById("contenedor-select-envio");
+            const selectEnvio = document.getElementById("select-envio");
+
+            if (!checkRecogida) return;
+
+            if (checkRecogida.checked) {
+                if (contenedorDireccion) contenedorDireccion.style.display = "none";
+                if (inputDireccion) {
+                    inputDireccion.required = false;
+                    inputDireccion.value = "";
+                }
+                if (contenedorSelectEnvio) contenedorSelectEnvio.style.display = "none";
+                if (selectEnvio) selectEnvio.required = false;
+                if (infoRecogida) infoRecogida.style.display = "block";
+            } else {
+                if (contenedorDireccion) contenedorDireccion.style.display = "block";
+                if (inputDireccion) inputDireccion.required = true;
+                if (contenedorSelectEnvio) contenedorSelectEnvio.style.display = "block";
+                if (selectEnvio) selectEnvio.required = true;
+                if (infoRecogida) infoRecogida.style.display = "none";
+            }
+        }
+
+        function abrirProspecto(prodId) {
+            const data = BASE_PROSPECTOS[prodId];
+            const prod = PRODUCTOS.find(p => p.id === prodId);
+
+            if (!data || !prod) return;
+
+            PRODUCTO_ACTUAL = prod;
+
+            document.getElementById("prospecto-nombre").innerText = data.nombre;
+            document.getElementById("prospecto-formula").innerText = data.formula;
+            document.getElementById("prospecto-uso").innerText = data.uso;
+            document.getElementById("prospecto-dosis").innerText = data.dosis;
+            document.getElementById("prospecto-contraindicaciones").innerText = data.contraindicaciones;
+
+            document.getElementById("modal-prospecto").classList.add("active");
+        }
+
+        function cargarOpcionesEnvio() {
+            const select = document.getElementById("select-envio");
+            if (!select) return;
+
+            let html = `<option value="" disabled selected>-- Selecciona un Municipio para el Envío --</option>`;
+
+            TARIFAS_MENSAJERIA.forEach(zona => {
+                html += `<optgroup label="${zona.zona}">`;
+                zona.municipios.forEach(m => {
+                    html += `<option value="${m.nombre}" data-precio="${m.precio}">${m.nombre} - ${m.precio} CUP</option>`;
+                });
+                html += `</optgroup>`;
+            });
+
+            select.innerHTML = html;
+        }
+
+        function agregarAlCarrito(prod, cantidad = 1, talla = "") {
+            const index = CARRITO.findIndex(item => item.producto.id === prod.id && item.talla === talla);
+            if (index > -1) {
+                CARRITO[index].cantidad += cantidad;
+            } else {
+                CARRITO.push({ producto: prod, cantidad: cantidad, talla: talla });
+            }
+            actualizarBadgeCarrito();
+            const textoTalla = talla ? ` (Talla: ${talla})` : "";
+            alert(`✅ ${cantidad}x "${prod.nombre}"${textoTalla} añadido(s) al carrito.`);
+        }
+
+        function actualizarBadgeCarrito() {
+            const totalItems = CARRITO.reduce((sum, item) => sum + item.cantidad, 0);
+    
+            const contadorNav = document.getElementById("contador-carrito");
+            if (contadorNav) contadorNav.innerText = totalItems;
+
+            const contadorHero = document.getElementById("contador-carrito-hero");
+            if (contadorHero) contadorHero.innerText = totalItems;
+        }
+
+        function abrirModalPedidoUnico(prod) {
+            MODO_PEDIDO = "UNICO";
+            PRODUCTO_ACTUAL = prod;
+
+            if (prod.tallas && prod.tallas.length > 0) {
+                const selectTallaCard = document.getElementById(`talla-card-${prod.id}`);
+                let talla = selectTallaCard ? selectTallaCard.value : "";
+                if (!talla) {
+                    alert("Por favor, selecciona una talla disponible antes de realizar el pedido.");
+                    return;
+                }
+                PRODUCTO_ACTUAL_TALLA = talla;
+            } else {
+                PRODUCTO_ACTUAL_TALLA = "";
+            }
+
+            document.getElementById("modal-pedido-titulo").innerText = "Finalizar Pedido";
+            document.getElementById("vista-producto-unico").style.display = "flex";
+            document.getElementById("vista-carrito-compras").style.display = "none";
+            document.getElementById("grupo-cantidad").style.display = "block";
+
+            document.getElementById("modal-img").src = prod.img;
+            document.getElementById("modal-nombre").innerText = prod.nombre + (PRODUCTO_ACTUAL_TALLA ? ` (Talla: ${PRODUCTO_ACTUAL_TALLA})` : "");
+            document.getElementById("modal-precio").innerText = prod.precio;
+            document.getElementById("input-cantidad").value = 1;
+
+            const checkRecogida = document.getElementById("check-recogida");
+            if (checkRecogida) checkRecogida.checked = false;
+
+            gestionarCamposEnvio();
+            actualizarResumenTotales();
+            document.getElementById("modal-pedido").classList.add("active");
+        }
+
+        function abrirModalCarrito() {
+            MODO_PEDIDO = "CARRITO";
+
+            document.getElementById("modal-pedido-titulo").innerText = "Resumen del Carrito";
+            document.getElementById("vista-producto-unico").style.display = "none";
+            document.getElementById("vista-carrito-compras").style.display = "block";
+            document.getElementById("grupo-cantidad").style.display = "none";
+
+            const checkRecogida = document.getElementById("check-recogida");
+            if (checkRecogida) checkRecogida.checked = false;
+
+            renderizarItemsCarrito();
+            gestionarCamposEnvio();
+            actualizarResumenTotales();
+            document.getElementById("modal-pedido").classList.add("active");
+        }
+
+        function renderizarItemsCarrito() {
+            const contenedor = document.getElementById("lista-items-carrito");
+            if (!contenedor) return;
+
+            if (CARRITO.length === 0) {
+                contenedor.innerHTML = "<p style='font-size: 0.9rem; color: #64748b;'>El carrito está vacío.</p>";
+                return;
+            }
+
+            contenedor.innerHTML = CARRITO.map((item, i) => `
+                <div class="item-carrito">
+                    <div class="item-carrito-info">
+                        <div class="item-carrito-nombre">${item.producto.nombre}${item.talla ? ` [Talla: ${item.talla}]` : ''} (x${item.cantidad})</div>
+                        <div class="item-carrito-precio">${item.producto.numericPrecio * item.cantidad} ${item.producto.moneda}</div>
+                    </div>
+                    <button type="button" class="btn-eliminar-item" onclick="eliminarDelCarrito(${i})">Eliminar</button>
+                </div>
+            `).join("");
+        }
+
+        function eliminarDelCarrito(index) {
+            CARRITO.splice(index, 1);
+            actualizarBadgeCarrito();
+            if (CARRITO.length === 0) {
+                document.getElementById("modal-pedido").classList.remove("active");
+            } else {
+                renderizarItemsCarrito();
+                actualizarResumenTotales();
+            }
+        }
+
+        function actualizarResumenTotales() {
+            const checkRecogida = document.getElementById("check-recogida");
+            const selectEnvio = document.getElementById("select-envio");
+            
+            let costoEnvio = 0;
+            if (selectEnvio && selectEnvio.selectedIndex >= 0 && (!checkRecogida || !checkRecogida.checked)) {
+                const opt = selectEnvio.options[selectEnvio.selectedIndex];
+                costoEnvio = opt && opt.dataset.precio ? parseInt(opt.dataset.precio) : 0;
+            }
+
+            let subtotalCUP = 0;
+            let subtotalUSD = 0;
+
+            if (MODO_PEDIDO === "UNICO" && PRODUCTO_ACTUAL) {
+                const qty = parseInt(document.getElementById("input-cantidad").value) || 1;
+                if (PRODUCTO_ACTUAL.moneda === "CUP") {
+                    subtotalCUP = PRODUCTO_ACTUAL.numericPrecio * qty;
+                } else {
+                    subtotalUSD = PRODUCTO_ACTUAL.numericPrecio * qty;
+                }
+            } else if (MODO_PEDIDO === "CARRITO") {
+                CARRITO.forEach(item => {
+                    if (item.producto.moneda === "CUP") {
+                        subtotalCUP += item.producto.numericPrecio * item.cantidad;
+                    } else {
+                        subtotalUSD += item.producto.numericPrecio * item.cantidad;
+                    }
+                });
+            }
+
+            let subtotalTexto = "";
+            if (subtotalCUP > 0 && subtotalUSD > 0) {
+                subtotalTexto = `${subtotalCUP} CUP + ${subtotalUSD} USD`;
+            } else if (subtotalUSD > 0) {
+                subtotalTexto = `${subtotalUSD} USD`;
+            } else {
+                subtotalTexto = `${subtotalCUP} CUP`;
+            }
+
+            let totalTexto = "";
+            if (subtotalCUP > 0 && subtotalUSD > 0) {
+                totalTexto = `${subtotalCUP + costoEnvio} CUP + ${subtotalUSD} USD`;
+            } else if (subtotalUSD > 0) {
+                totalTexto = `${costoEnvio > 0 ? costoEnvio + ' CUP + ' : ''}${subtotalUSD} USD`;
+            } else {
+                totalTexto = `${subtotalCUP + costoEnvio} CUP`;
+            }
+
+            document.getElementById("resumen-subtotal").innerText = subtotalTexto;
+            document.getElementById("resumen-envio").innerText = `${costoEnvio} CUP`;
+            document.getElementById("resumen-total").innerText = totalTexto;
+        }
+
+        /* REQUERIMIENTO 3: REDIRECCIÓN EXCLUSIVA PARA TALLER PERSONALIZADO */
+        function procesarEnvioWhatsApp(e) {
+            e.preventDefault();
+
+            const nombre = document.getElementById("input-nombre").value.trim();
+            const telefono = document.getElementById("input-telefono").value.trim();
+            const checkRecogida = document.getElementById("check-recogida");
+            const esRecogida = checkRecogida ? checkRecogida.checked : false;
+
+            const direccionInput = document.getElementById("input-direccion").value.trim();
+            const horario = document.getElementById("input-horario").value.trim();
+            const selectEnvio = document.getElementById("select-envio");
+            const envioTexto = esRecogida ? "📍 Recogida en Local (Alamar)" : (selectEnvio.options[selectEnvio.selectedIndex] ? selectEnvio.options[selectEnvio.selectedIndex].text : "");
+            const comercial = obtenerComercialActivo();
+
+            let detallePedido = "";
+            let esSoloTaller = true;
+
+            if (MODO_PEDIDO === "UNICO" && PRODUCTO_ACTUAL) {
+                const cantidad = document.getElementById("input-cantidad").value;
+                const tallaTexto = PRODUCTO_ACTUAL_TALLA ? ` (Talla: ${PRODUCTO_ACTUAL_TALLA})` : "";
+                detallePedido = `• 1x ${PRODUCTO_ACTUAL.nombre}${tallaTexto} (Cantidad: ${cantidad}) - ${PRODUCTO_ACTUAL.precio}`;
+                if (PRODUCTO_ACTUAL.categoria !== "tienda-taller") {
+                    esSoloTaller = false;
+                }
+            } else {
+                detallePedido = CARRITO.map(item => {
+                    if (item.producto.categoria !== "tienda-taller") {
+                        esSoloTaller = false;
+                    }
+                    return `• ${item.cantidad}x ${item.producto.nombre}${item.talla ? ` (Talla: ${item.talla})` : ''} - ${item.producto.numericPrecio * item.cantidad} ${item.producto.moneda}`;
+                }).join("\n");
+            }
+
+            const subtotal = document.getElementById("resumen-subtotal").innerText;
+            const envio = document.getElementById("resumen-envio").innerText;
+            const total = document.getElementById("resumen-total").innerText;
+
+            let mensaje = `🛒 *NUEVO PEDIDO - DROP STORE*\n\n`;
+            mensaje += `👤 *Cliente:* ${nombre}\n`;
+            mensaje += `📞 *Teléfono:* ${telefono}\n`;
+
+            if (esRecogida) {
+                mensaje += `🏠 *Entrega:* Recogida en Local (Alamar) - Presentará Vale de Pedido\n`;
+            } else {
+                mensaje += `🏠 *Dirección:* ${direccionInput}\n`;
+            }
+
+            if (horario) {
+                mensaje += `⏰ *Horario Disponible:* ${horario}\n`;
+            } else {
+                mensaje += `⏰ *Horario Disponible:* Entregas habituales (1:00 PM - 6:00 PM)\n`;
+            }
+            mensaje += `🚚 *Método de Entrega:* ${envioTexto}\n\n`;
+            mensaje += `📦 *Detalle del Pedido:*\n${detallePedido}\n\n`;
+            mensaje += `💰 *Subtotal:* ${subtotal}\n`;
+            mensaje += `🛵 *Envío:* ${envio}\n`;
+            mensaje += `💵 *TOTAL:* ${total}\n`;
+
+            if (comercial) {
+                mensaje += `\n🏷️ *Promotor / Código:* ${comercial}\n`;
+            }
+
+            // REQUERIMIENTO 3: Número condicional según tienda origen
+            const numeroDestino = esSoloTaller ? "5355708928" : "5354731530";
+
+            const urlWhatsApp = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(mensaje)}`;
+            window.open(urlWhatsApp, "_blank");
+
+            document.getElementById("modal-pedido").classList.remove("active");
+            if (MODO_PEDIDO === "CARRITO") {
+                CARRITO = [];
+                actualizarBadgeCarrito();
+            }
+        }
+    </script>
+</body>
+</html>
